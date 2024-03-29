@@ -1,0 +1,26 @@
+table {
+    border-collapse: collapse;
+    border: 3px solid grey;
+    border-top: 3px solid grey;
+    width: 600px;
+ }
+
+ th {
+    border: 1px solid grey;
+    width: 20%;
+ }
+
+ th, td {
+    border: 1px solid grey;
+    border-bottom: 1px solid grey;
+    padding: 10px 15px;
+ }
+
+ caption {
+    caption-side: bottom;
+    text-align: right;
+    padding: 10px 0;
+    font-size: 14px;
+ }
+
+ 
