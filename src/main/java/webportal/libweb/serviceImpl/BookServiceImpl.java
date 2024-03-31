@@ -51,6 +51,7 @@ public class BookServiceImpl implements BookService {
     } */
 
     @SuppressWarnings("null")
+    @Transactional
     @Override
     public void updateBook(Book book) {
         repository.save(book);

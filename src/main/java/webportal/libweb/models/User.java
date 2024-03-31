@@ -24,13 +24,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_gen")
     private Long id;
 
-    @Column(name = "firs_name")
+    @Column(name = "first_name")
     private String firstName;
     
     @Column(name = "last_name")
     private String lastName;
     
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number", unique = true)
     private String phoneNumber;
     
     @JsonIgnore
