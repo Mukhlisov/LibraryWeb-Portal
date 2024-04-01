@@ -19,6 +19,9 @@
       <td th:text = "${book.status}"></td>
     </tr>
   </table>
+  <form th:action="@{/order}" method="get">
+    <input type="submit" value="To order page">
+  </form>
   
 </body>
 </html>
