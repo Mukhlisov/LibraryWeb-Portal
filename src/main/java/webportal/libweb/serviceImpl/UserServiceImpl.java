@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import webportal.libweb.dataTransferObj.UserRegDTO;
 import webportal.libweb.models.User;
 import webportal.libweb.repository.UserRepo;
 import webportal.libweb.services.UserService;
@@ -22,10 +23,15 @@ public class UserServiceImpl implements UserService{
         return repository.findAll();
     }
 
-    @SuppressWarnings("null")
     @Override
-    public void saveUser(User user) {
-        repository.save(user);
+    public void saveUser(UserRegDTO user) {
+        repository.save(new User(
+            user.getFirstName(),
+            user.getLastName(),
+            user.getPhoneNumber(),
+            user.getPassword(),
+            user.getRole()
+        ));            
     }
 
     @SuppressWarnings("null")
@@ -57,6 +63,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public void deleteByPhoneNumber(String phone){
         repository.deleteByPhoneNumber(phone);
+    }
+
+    @Override
+    public boolean existsByPhoneNumber(String phone) {
+        return repository.existsByPhoneNumber(phone);
     }
 
 }

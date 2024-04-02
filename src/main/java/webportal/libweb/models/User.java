@@ -12,12 +12,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import webportal.libweb.models.enums.Role;
 
 @Data
 @Table(name = "Users")
 @Entity
 @SequenceGenerator(name = "user_gen", sequenceName = "user_seq", allocationSize = 1)
+@RequiredArgsConstructor
 public class User {
 
     @Id
@@ -38,5 +40,13 @@ public class User {
     
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public User(String firstName, String lastName, String phoneNumber, String password, Role role){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.role = role;
+    }
 
 }

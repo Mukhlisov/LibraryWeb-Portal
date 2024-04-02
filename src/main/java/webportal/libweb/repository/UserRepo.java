@@ -10,4 +10,5 @@ import webportal.libweb.models.User;
 public interface UserRepo extends JpaRepository<User, Long>{
     User findByPhoneNumber(String phoneNumber);
     void deleteByPhoneNumber(String phone);
+    boolean existsByPhoneNumber(String phone);
 }

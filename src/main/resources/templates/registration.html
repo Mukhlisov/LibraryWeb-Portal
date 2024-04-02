@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+</head>
+<body>
+    <div th:if = "${param.success}">
+        <p>You're successfully registreted</p>
+    </div>
+    <h1>Registration</h1>
+    <form th:action ="@{/reg}" method="post" th:object = "${user}">
+
+        <div>
+            <label for ="firstName">
+                First Name
+            </label>
+            <input id="firstName" th:field="*{firstName}" autocomplete="false"/>
+        </div>
+       
+        <div>
+            <label for ="lastName">
+                Last Name
+            </label>
+            <input id="lastName" th:field="*{lastName}" 
+            required autofocus = "autofocus" autocomplete="false"/>    
+        </div>
+        
+        <div>
+            <label for ="phoneNumber">
+                Phone number
+            </label>
+            <input id="phoneNumber" th:field="*{phoneNumber}" 
+            required autofocus = "autofocus" autocomplete="false"/>
+            <div th:if = "${param.fail_pn}">
+                <p>This phone number is already in use</p>
+            </div>
+        </div>
+        
+        <div>
+            <label for ="password">
+                Password
+            </label>
+            <input id="password" type = "password" th:field="*{password}" 
+            required autofocus = "autofocus" autocomplete="false"/>
+        </div>
+        
+        <div>
+            <button type="submit" class = "btn btn-success">Register</button>
+            <span>Allready registered? <a href="/" th:href="@{/login}">Login here</a></span>
+        </div>
+
+    </form>
+</body>
+</html>
