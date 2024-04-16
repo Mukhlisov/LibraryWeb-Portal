@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import lombok.AllArgsConstructor;
-import webportal.libweb.dataTransferObj.UserRegDTO;
-import webportal.libweb.models.enums.Role;
-import webportal.libweb.services.UserService;
+import webportal.libweb.DTOs.UserRegDTO;
+import webportal.libweb.User.UserService;
+import webportal.libweb.enums.Role;
 
 @Controller
 @AllArgsConstructor
@@ -24,7 +24,7 @@ public class UserRegController {
     }
 
     @PostMapping("reg")
-    public String registerUserAcc(@ModelAttribute(name = "user") UserRegDTO user){
+    public String registerUserAcc(@ModelAttribute UserRegDTO user){
         if (service.existsByPhoneNumber(user.getPhoneNumber())){
             return "redirect:/reg?fail_pn";
         }

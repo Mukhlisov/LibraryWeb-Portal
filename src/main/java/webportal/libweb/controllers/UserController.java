@@ -4,9 +4,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
-import webportal.libweb.dataTransferObj.UserRegDTO;
-import webportal.libweb.models.User;
-import webportal.libweb.services.UserService;
+import webportal.libweb.DTOs.UserRegDTO;
+import webportal.libweb.User.User;
+import webportal.libweb.User.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,12 +34,12 @@ public class UserController {
     }
 
     @GetMapping("/id/{id}")
-    public Optional<User> getUserById(@PathVariable(name = "id") Long id) {
+    public Optional<User> getUserById(@PathVariable Long id) {
         return service.findById(id);
     }
     
     @GetMapping("/phone/{phone}")
-    public User getUserByPhone(@PathVariable(name = "phone") String phone) {
+    public User getUserByPhone(@PathVariable String phone) {
         return service.findByPhoneNumber(phone);
     }
 
@@ -56,13 +56,13 @@ public class UserController {
     }
     
     @DeleteMapping("/delete-id/{id}")
-    public String deleteUserById(@PathVariable(name = "id") Long id){
+    public String deleteUserById(@PathVariable Long id){
         service.deleteById(id);
         return "Success! User was deleted";
     }
 
     @DeleteMapping("/delete-phone/{phone}")
-    public String deleteUserByPhone(@PathVariable(name = "phone") String phone){
+    public String deleteUserByPhone(@PathVariable String phone){
         service.deleteByPhoneNumber(phone);
         return "Success! User was deleted";
     }

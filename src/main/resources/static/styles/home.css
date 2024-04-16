@@ -1,0 +1,66 @@
+   body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background-image: url(https://i.pinimg.com/originals/f0/2e/0f/f02e0fb80fa9c945ef1d3a6fdcba90c8.jpg);
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .site__header{
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0px;
+    margin: 0 8%;
+    border-radius: 20px;
+    background-color: #a3a3a3;
+    height: calc(2.25rem + 20px);
+  }
+
+  
+  .search__tool{
+      justify-content: center;
+      flex: 1;
+    }
+    
+    .header__search{
+        display: block;
+        width: 100%;
+        height: calc(2.25rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #bdbdbd;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    
+    .site__logo{
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        flex: 1;
+    }
+
+    .login{
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: right;
+        flex: 1;
+    }
+
+    .main__site{
+      /* display: flex; */
+      padding: 1px;
+      margin: 2% 8%;
+      border-radius: 20px;
+      background-color: #eeeeee;
+      height: max-content;
+    }

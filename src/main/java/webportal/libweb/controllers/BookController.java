@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import webportal.libweb.models.Book;
-import webportal.libweb.services.BookService;
+import webportal.libweb.Book.Book;
+import webportal.libweb.Book.BookService;
 
 @RestController
 @RequestMapping("/api/book")
@@ -35,12 +35,12 @@ public class BookController {
     }
 
     @GetMapping("/id/{id}")
-    public Optional<Book> getBookById(@PathVariable(name = "id") Long id) {
+    public Optional<Book> getBookById(@PathVariable Long id) {
         return service.findById(id);
     }
     
     @GetMapping("/title/{title}")
-    public List<Book> getBookByTitle(@PathVariable(name = "title") String title) {
+    public List<Book> getBookByTitle(@PathVariable String title) {
         return service.findByTitle(title);
     }
 
@@ -58,7 +58,7 @@ public class BookController {
     }
     
     @DeleteMapping("/delete-id/{id}")
-    public String deleteBookById(@PathVariable(name = "id") Long id){
+    public String deleteBookById(@PathVariable Long id){
         service.deleteBook(id);
         return "Success! User was deleted";
     }
