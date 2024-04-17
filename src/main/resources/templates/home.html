@@ -10,61 +10,34 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary container-md d-flex justify-content-around sticky-top">
-    <a class="navbar-brand" th:href="@{/}"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-book-half" viewBox="0 0 16 16">
-      <path d="M8.5 2.687c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/></svg>
-    <b>LibHub</b></a>
-    <form class="d-flex container" role="search">
-      <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск">
-    </form>
-    <a class="navbar-brand" th:href="@{/login}"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" 
-      class="bi bi-person-fill" viewBox="0 0 16 16"><path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
-    </a>
-  </nav>
-<div class = "container-md">
-  <div class="row">
-    <div class="col">
-      <a class = "card">
-        <img th:src="@{/bookCovers/BookOfBeing_SnegovSergey.jpg}" class="card-img-top" alt="Книга Бытия">
-        <div class="card-body">
-          <p class="card-text">
-            Title<br>
-            Author<br>
-            Year<br>
-            Quantity<br>
-          </p>
+  <div th:insert = "~{navbar :: #navigbar}"></div>
+
+  <div class = "container-md px-5 py-5 bg-light">
+
+    <div th:each = "book : ${bookList}">
+      <a class="card mb-3 text-bg-light border border-black" th:href="@{'/book/' + ${book.id}}" target="_blank" style="max-width: 540px; text-decoration: none;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img th:src="@{bookCovers/MurderOntheOrientExpress_AgathaChristie.jpg}" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h3 class="card-title" th:text = "${book.title}"></h3>
+              <p class="card-text" th:text = ${book.year}></p>
+              <p class="card-text">description?</p>
+              <div th:if = "${book.quantity == 0}">
+                <p class="card-text"><small class="text-body-secondary">Нет в наличии</small></p>
+              </div>
+              <div th:unless = "${book.quantity == 0}">
+                <p class="card-text"><small class="text-body-secondary">Книг в наличии: <span th:text = "${book.quantity}"></span></small></p>
+              </div>
+            </div>
+          </div>
         </div>
       </a>
     </div>
-    <div class="col">
-      <a class = "card">
-        <img th:src="@{/bookCovers/BookOfBeing_SnegovSergey.jpg}" class="card-img-top" alt="Книга Бытия">
-        <div class="card-body">
-          <p class="card-text">
-            Title<br>
-            Author<br>
-            Year<br>
-            Quantity<br>
-          </p>
-        </div>
-      </a>
-    </div>
-    <div class="col">
-      <a class = "card">
-        <img th:src="@{/bookCovers/BookOfBeing_SnegovSergey.jpg}" class="card-img-top" alt="Книга Бытия">
-        <div class="card-body">
-          <p class="card-text">
-            Title<br>
-            Author<br>
-            Year<br>
-            Quantity<br>
-          </p>
-        </div>
-      </a>
-    </div>
-  </div>
-  
-</div> 
+
+  </div> 
 
 </body>
 </html>

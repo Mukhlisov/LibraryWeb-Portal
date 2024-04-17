@@ -20,7 +20,7 @@ import webportal.libweb.Book.BookService;
 @RestController
 @RequestMapping("/api/book")
 @AllArgsConstructor
-public class BookController {
+public class BookRestController {
 
     private final BookService service;
 
