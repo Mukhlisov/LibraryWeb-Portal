@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 @AllArgsConstructor
 public class BookServiceImpl implements BookService {
 
+    private static final int LIMIT = 4;
     private final BookRepo repository;
     @Override
     public List<Book> findAllBook() {
@@ -20,14 +20,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getRandomBooks() {
-        List<Book> storage = repository.findAll();
-        if (storage.size() < 4){
-            return storage;
-        }
-        
-        Random random = new Random(System.currentTimeMillis());
-        int fromIndex = random.nextInt(storage.size() - 4);
-        return storage.subList(fromIndex, fromIndex + 4);
+        return repository.getRandomBooks(LIMIT);
     }
 
     @Override
