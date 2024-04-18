@@ -1,12 +1,10 @@
-package webportal.libweb.controllers;
+package webportal.libweb.User;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import webportal.libweb.DTOs.UserRegDTO;
-import webportal.libweb.User.User;
-import webportal.libweb.User.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RestController
 @RequestMapping("/api/user")
 @AllArgsConstructor
-public class UserController {
+public class UserRestController {
 
     private final UserService service;
 
