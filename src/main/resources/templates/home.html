@@ -1,30 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" 
     integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/styles/home.css}">
+    <link rel="stylesheet" th:href="@{/styles/background.css}">
+    <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
     <title>LibHub</title>
 </head>
 
 <body>
-  <div th:insert = "~{navbar :: #navigbar}"></div>
-
-  <div class = "container-md px-5 py-5 bg-light">
+  <div class = "sticky-top" th:replace = "~{elements :: navigbar}"></div>
+  <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
 
     <div th:each = "book : ${bookList}">
-      <a class="card mb-3 text-bg-light border border-black" th:href="@{'/book/' + ${book.id}}" target="_blank" style="max-width: 540px; text-decoration: none;">
+      <a class="card mb-3 text-bg-light border border-black" th:href="@{'/book/?id=' + ${book.id}}" target="_blank" style="max-width: 540px; text-decoration: none;">
         <div class="row g-0">
           <div class="col-md-4">
-            <img th:src="@{bookCovers/MurderOntheOrientExpress_AgathaChristie.jpg}" class="img-fluid rounded-start" alt="...">
+            <img th:src="@{'bookCovers/' + ${book.cover}}" class="img-fluid rounded-start" alt="...">
           </div>
           <div class="col-md-8">
             <div class="card-body">
               <h3 class="card-title" th:text = "${book.title}"></h3>
-              <p class="card-text" th:text = ${book.year}></p>
-              <p class="card-text">description?</p>
+              <p class="card-text">Год издания: <span th:text = ${book.year}></span></p>
+              <div th:if ="${book.authors.isEmpty()}">
+                <p>Автор не указан</p>
+              </div>
+              <div th:unless="${book.authors.isEmpty()}">
+                <p class="card-text">Автор: <span th:each = "author : ${book.authors}"><span th:text = "${author.name} + '; '"></span></span></p>
+              </div>
               <div th:if = "${book.quantity == 0}">
                 <p class="card-text"><small class="text-body-secondary">Нет в наличии</small></p>
               </div>

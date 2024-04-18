@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+    <!-- NAVIGATON PANEL / HEADER -->
+    <nav th:fragment="navigbar" class="navbar navbar-expand-lg bg-transient container-md d-flex justify-content-around">
+      <a class="navbar-brand" th:href="@{/}" style="color: #33DFF0"><img th:src = "@{/icons/icons8-book-50.png}"><b>LibHub</b></a>
+      <form class="d-flex container" method="post" th:action = "@{/}">
+        <input class="form-control me-2" name="title" type="search" placeholder="Поиск" aria-label="Поиск">
+      </form>
+      <a class="navbar-brand" th:href="@{/login}"><img th:src = "@{/icons/icons8-male-user-50.png}"></a>
+    </nav>
+    
+</body>
+</html>
