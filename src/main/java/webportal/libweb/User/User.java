@@ -34,6 +34,8 @@ public class User {
     
     @Column(name = "phone_number", unique = true)
     private String phoneNumber;
+
+    private String email;
     
     @JsonIgnore
     private String password;
