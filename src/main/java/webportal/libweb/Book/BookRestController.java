@@ -1,4 +1,4 @@
-package webportal.libweb.controllers;
+package webportal.libweb.Book;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import webportal.libweb.Book.Book;
-import webportal.libweb.Book.BookService;
 
 @RestController
 @RequestMapping("/api/book")
