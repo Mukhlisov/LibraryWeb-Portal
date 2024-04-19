@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 //import webportal.libweb.Author.AuthorService;
 import webportal.libweb.Book.Book;
 import webportal.libweb.Book.BookService;
+import webportal.libweb.DTOs.BookAddDTO;
+import webportal.libweb.Storage.StorageService;
+
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class BookEditorController {
 
     private final BookService bookService;
+    private final StorageService storageService;
 
     //private final AuthorService authorService;
 
@@ -26,9 +30,14 @@ public class BookEditorController {
     }
 
     @PostMapping("/add")
-    public String postMethodName(@ModelAttribute Book book) {
-        bookService.saveBook(book);
-        return "redirect:/addBook?success";
+    public String postMethodName(@ModelAttribute BookAddDTO bookAddDTO) {
+        bookService.saveBook(new Book(  bookAddDTO.getTitle(), 
+                                        bookAddDTO.getQuantity(), 
+                                        bookAddDTO.getYear(), 
+                                        "cover-name", 
+                                        bookAddDTO.getAuthors())
+                            );
+        return "redirect:/";
     }
     
 
