@@ -17,20 +17,20 @@
         <form method="post">
             <div class="mb-3" style="width: 50%;">
                 <label for="titleInput" class="form-label"><b>Название книги</b></label>
-                <input type="text" class="form-control" id="titleInput" required>
+                <input type="text" name = "title" class="form-control" id="titleInput" required>
               </div>
             <div class="mb-3" style="width: 50%;">
                 <label for="authorsInput" class="form-label"><b>Автор</b></label>
-                <input type="text" class="form-control" id="authorsInput" aria-describedby="authorsHelp" placeholder="Иванов И.И.">
+                <input type="text" name = "authors" class="form-control" id="authorsInput" aria-describedby="authorsHelp" placeholder="Иванов И.И.">
                 <div id="authorsHelp" class="form-text">Введите имя автора и его инициалы, если авторов несколько, то разделите их через ';'</div>
             </div>
             <div class="mb-3" style="width: 10%">
                 <label for="year" class="form-label"><b>Год</b></label>
-                <input type="number" class="form-control" id="year" placeholder=2000>
+                <input type="number" name = "year" class="form-control" id="year" placeholder=2000>
             </div>
             <div class="mb-3" style="width: 10%">
                 <label for="quantity" class="form-label"><b>Количество</b></label>
-                <input type="number" class="form-control" id="quantity" placeholder=0>
+                <input type="number" name = "quantity" class="form-control" id="quantity" placeholder=0>
             </div>
             <div class="mb-3" style="width: 50%;">
                 <label for="inputFile" class="form-label"><b>Обложка</b></label>
