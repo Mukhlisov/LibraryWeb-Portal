@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.4</version>
+		<version>3.2.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>webportal</groupId>
@@ -22,7 +22,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-			<version>3.2.4</version>
+			<version>3.2.5</version>
 		</dependency>
 		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -41,7 +41,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
-			<version>3.1.10</version>
+			<version>3.2.5</version>
       		<scope>compile</scope>
     	</dependency>
     	<dependency>
@@ -53,32 +53,31 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<version>3.2.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session-core</artifactId>
+			<version>3.2.2</version>
 		</dependency>
-		
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
+			<version>3.2.5</version>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>com.mysql</groupId>
-			<artifactId>mysql-connector-j</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>1.18.32</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<version>3.2.5</version>
 			<scope>test</scope>
 		</dependency>
 
