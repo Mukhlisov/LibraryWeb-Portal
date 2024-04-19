@@ -29,4 +29,10 @@ public class Author {
     
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Book> books;
+
+    public Author(){}
+
+    public Author(String name){
+        this.name = name;
+    }
 }

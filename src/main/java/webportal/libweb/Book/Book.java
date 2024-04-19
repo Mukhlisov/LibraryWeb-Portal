@@ -18,7 +18,7 @@ import webportal.libweb.Author.Author;
 @Data
 @Entity
 @Table(name = "Books")
-@SequenceGenerator(name = "book_gen", sequenceName = "book_sequence", allocationSize = 1)
+@SequenceGenerator(name = "book_gen", sequenceName = "book_sequence", allocationSize = 1, initialValue = 2)
 public class Book {
 
     @Id
@@ -36,4 +36,13 @@ public class Book {
     @ManyToMany(mappedBy = "books", fetch = FetchType.EAGER)
     private List<Author> authors;
 
+    public Book(){}
+
+    public Book(String title, Integer quantity, Integer year, String cover, List<Author> authors){
+        this.title = title;
+        this.quantity = quantity;
+        this.year = year;
+        this.cover = cover;
+        this.authors = authors;
+    }
 }
