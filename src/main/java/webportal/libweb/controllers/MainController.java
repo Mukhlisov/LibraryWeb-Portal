@@ -23,20 +23,15 @@ public class MainController {
     private final BookService bookService;
 
     @GetMapping
-    public String homePage(@RequestParam(name = "title", required = false, defaultValue = "") String title, Model model) {
-        List<Book> bookList;
-        if (title.isEmpty()){
-            bookList = bookService.getRandomBooks();
-        } else {
-            bookList = bookService.findByTitle(title);
-        }
-        model.addAttribute("bookList", bookList);
+    public String homePage(Model model) {
+        model.addAttribute("bookList", bookService.getRandomBooks());
         return "home";
     }
 
     @PostMapping
-    public String home_searchingBooks(@RequestParam(name = "title", required = false, defaultValue = "") String title) {
-        return "redirect:/?title="+title;
+    public String home_searchingBooks(@RequestParam(name = "title", required = false, defaultValue = "") String title, Model model) {
+        model.addAttribute("bookList", bookService.findByTitle(title));
+        return "home";
     }
 
     @GetMapping("/book/")
