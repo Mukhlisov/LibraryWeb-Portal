@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +18,7 @@
       <a class="card mb-3 text-bg-light border border-black" th:href="@{'/book/?id=' + ${book.id}}" target="_blank" style="max-width: 540px; text-decoration: none;">
         <div class="row g-0">
           <div class="col-md-4">
-            <img th:src="@{'bookCovers/' + ${book.cover}}" class="img-fluid rounded-start" alt="...">
+            <img th:src="@{'bookCovers/' + ${book.cover}}" class="img-fluid rounded-start" alt="No image yet...">
           </div>
           <div class="col-md-8">
             <div class="card-body">
@@ -28,7 +28,7 @@
                 <p>Автор не указан</p>
               </div>
               <div th:unless="${book.authors.isEmpty()}">
-                <p class="card-text">Автор: <span th:each = "author : ${book.authors}"><span th:text = "${author.name} + '; '"></span></span></p>
+                <p class="card-text">Автор: <span th:each = "author : ${book.authors}"><span th:text = "${author.getShortName()} + '; '"></span></span></p>
               </div>
               <div th:if = "${book.quantity == 0}">
                 <p class="card-text"><small class="text-body-secondary">Нет в наличии</small></p>

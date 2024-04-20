@@ -14,15 +14,15 @@
 
     <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
 
-        <form method="post">
+        <form method="post" enctype="multipart/form-data" th:action = "@{/lib/books/add}">
             <div class="mb-3" style="width: 50%;">
                 <label for="titleInput" class="form-label"><b>Название книги</b></label>
                 <input type="text" name = "title" class="form-control" id="titleInput" required>
               </div>
             <div class="mb-3" style="width: 50%;">
                 <label for="authorsInput" class="form-label"><b>Автор</b></label>
-                <input type="text" name = "authors" class="form-control" id="authorsInput" aria-describedby="authorsHelp" placeholder="Иванов И.И.">
-                <div id="authorsHelp" class="form-text">Введите имя автора и его инициалы, если авторов несколько, то разделите их через ';'</div>
+                <input type="text" name = "authors" class="form-control" id="authorsInput" aria-describedby="authorsHelp" placeholder="Иванов Иван Иванович">
+                <div id="authorsHelp" class="form-text">Введите полное имя автора (ФИО), если авторов несколько, то разделите их через ';'</div>
             </div>
             <div class="mb-3" style="width: 10%">
                 <label for="year" class="form-label"><b>Год</b></label>
@@ -34,7 +34,7 @@
             </div>
             <div class="mb-3" style="width: 50%;">
                 <label for="inputFile" class="form-label"><b>Обложка</b></label>
-                <input type="file" class="form-control" id="inputFile">
+                <input type="file" name = "file" class="form-control" id="inputFile">
               </div>
             <div class="col-12">
                 <button class="btn btn-outline-primary" type="submit">Добавить</button>
