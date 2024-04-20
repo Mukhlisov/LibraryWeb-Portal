@@ -2,6 +2,7 @@ package webportal.libweb.Book;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,7 +19,7 @@ import webportal.libweb.Author.Author;
 @Data
 @Entity
 @Table(name = "Books")
-@SequenceGenerator(name = "book_gen", sequenceName = "book_sequence", allocationSize = 1, initialValue = 2)
+@SequenceGenerator(name = "book_gen", sequenceName = "book_sequence", allocationSize = 1, initialValue = 1)
 public class Book {
 
     @Id

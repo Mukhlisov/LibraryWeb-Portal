@@ -24,8 +24,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void saveBook(Book book) {
-        repository.save(book);
+    public Book saveBook(Book book) {
+        return repository.save(book);
     }
 
     @Override
@@ -40,8 +40,8 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public void updateBook(Book book) {
-        repository.save(book);
+    public Book updateBook(Book book) {
+        return repository.save(book);
     }
 
     @Override
