@@ -1,8 +1,7 @@
 package webportal.libweb.Book;
 
-import java.util.List;
+import java.util.Set;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,15 +34,24 @@ public class Book {
     private String cover;
 
     @ManyToMany(mappedBy = "books", fetch = FetchType.EAGER)
-    private List<Author> authors;
+    private Set<Author> authors;
 
     public Book(){}
 
-    public Book(String title, Integer quantity, Integer year, String cover, List<Author> authors){
+    public Book(String title, Integer quantity, Integer year, String cover, Set<Author> authors){
         this.title = title;
         this.quantity = quantity;
         this.year = year;
         this.cover = cover;
         this.authors = authors;
+    }
+
+    public String getAllAuthors(){
+        StringBuffer buffer = new StringBuffer(40*authors.size());
+        for (Author author : this.authors) {
+            buffer.append(author.getFullName());
+            buffer.append("; ");
+        }
+        return buffer.toString();
     }
 }
