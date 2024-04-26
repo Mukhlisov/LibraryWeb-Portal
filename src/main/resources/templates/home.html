@@ -13,12 +13,11 @@
 <body>
   <div class = "sticky-top" th:replace = "~{elements :: navigbar}"></div>
   <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
-
     <div th:each = "book : ${bookList}">
       <a class="card mb-3 text-bg-light border border-black" th:href="@{'/book/?id=' + ${book.id}}" target="_blank" style="max-width: 540px; text-decoration: none;">
         <div class="row g-0">
           <div class="col-md-4">
-            <img th:src="@{'bookCovers/' + ${book.cover}}" class="img-fluid rounded-start" alt="No image yet...">
+            <img th:src="@{/covers/{filename}(filename=${book.cover})}" class="img-fluid rounded-start" alt="No image yet...">
           </div>
           <div class="col-md-8">
             <div class="card-body">
