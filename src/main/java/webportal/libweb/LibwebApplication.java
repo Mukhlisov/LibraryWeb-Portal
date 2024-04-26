@@ -10,7 +10,7 @@ import webportal.libweb.FileUploader.StorageProperties;
 import webportal.libweb.FileUploader.StorageService;
 
 @SpringBootApplication
-@EnableConfigurationProperties(StorageProperties.class)
+@EnableConfigurationProperties({StorageProperties.class})
 public class LibwebApplication {
 
 	public static void main(String[] args) {

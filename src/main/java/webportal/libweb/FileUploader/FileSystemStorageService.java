@@ -11,19 +11,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.SneakyThrows;
+
+
 @Service
 public class FileSystemStorageService implements StorageService{
 
     private final Path rootLocation;
 
-    @Autowired
+	@Autowired
     public FileSystemStorageService(StorageProperties prop){
 
-        if(prop.getLocation().trim().length() == 0){
+        if(prop.getDir().trim().isEmpty()){
             throw new StorageException("File upload location can not be Empty."); 
         }
 
-        this.rootLocation = Paths.get(prop.getLocation());
+        this.rootLocation = Paths.get(prop.getDir());
     }
 
     @Override
@@ -55,5 +58,14 @@ public class FileSystemStorageService implements StorageService{
 			throw new StorageException("Could not initialize storage", e);
 		}
     }
+
+	@Override
+	@SneakyThrows
+	public void deleteByName(String fileName) {
+		Path fileToDelete = rootLocation.resolve(fileName).normalize().toAbsolutePath();
+		Files.deleteIfExists(fileToDelete);
+	}
+
+	
 
 }
