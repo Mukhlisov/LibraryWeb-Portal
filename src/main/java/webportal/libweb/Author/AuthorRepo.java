@@ -14,4 +14,8 @@ public interface AuthorRepo extends JpaRepository<Author, Long>{
     @Modifying
     @Query(value = "DELETE FROM authors_books WHERE authors_id = :author_id AND books_id = :book_id", nativeQuery = true)
     int deleteRelationShip(@Param("author_id") Long author_id, @Param("book_id") Long book_id);
+
+    @Modifying
+    @Query(value = "DELETE FROM authors_books WHERE authors_id = :author_id", nativeQuery = true)
+    int deleteRelationShips(@Param("author_id") Long author_id);
 }

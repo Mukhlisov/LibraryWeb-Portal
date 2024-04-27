@@ -16,7 +16,7 @@
 
         <div class = "row">
             <div class="col col-md-auto" style="width: 70%;">
-                <form method="post" enctype="multipart/form-data" th:action = "@{/lib/books/update}">
+                <form method="post" enctype="multipart/form-data" th:action = "@{/lib-books/update}">
                     <input type="hidden" th:value = "${book.id}" name="id">
                     <div class="mb-3" style="width: 50%;">
                         <label class="form-label"><b>Название книги</b></label>
@@ -42,7 +42,7 @@
                       </div>
                     <div class="col-12">
                         <button class="btn btn-outline-primary" type="submit">Обновить данные</button>
-                        <form action="get" class="mt-2"><a th:href="@{/lib/books}" class="btn btn-outline-primary">Назад</a></form>
+                        <form action="get" class="mt-2"><a th:href="@{/lib-books}" class="btn btn-outline-primary">Назад</a></form>
                     </div>
                 </form>
             </div>

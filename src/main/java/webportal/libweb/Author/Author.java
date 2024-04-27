@@ -33,8 +33,13 @@ public class Author {
 
     public Author(){}
 
-    public Author(String name){
-        this.fullName = name;
+    public Author(Long id, String fullName){
+        this.id = id;
+        this.fullName = fullName;
+    }
+
+    public Author(String fullName){
+        this.fullName = fullName;
     }
 
     public Author(String name, List<Book> books){

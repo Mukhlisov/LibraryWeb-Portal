@@ -36,12 +36,12 @@
                         </ul>
                     </th>
                     <th th:text="${book.quantity}"></th>
-                    <th><a th:href="@{'/lib/books/update?id=' + ${book.id}}" class="btn btn-outline-primary">Обновить</a></th>
+                    <th><a th:href="@{'/lib-books/update?id=' + ${book.id}}" class="btn btn-outline-primary">Обновить</a></th>
                 </tr>
             </tbody>
         </table>
 
-        <a th:href="@{/lib/books/add}" class="btn btn-outline-primary">Добавить новую книгу</a>
+        <a th:href="@{/lib-books/add}" class="btn btn-outline-primary">Добавить новую книгу</a>
     </div>
     
 </body>
