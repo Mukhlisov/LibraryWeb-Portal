@@ -26,8 +26,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/lib/books")
-public class BookEditorController {
+@RequestMapping("/lib-books")
+public class BookEditController {
 
     private static final String noCover = "noCover.jpg";
 
@@ -64,7 +64,7 @@ public class BookEditorController {
         
         if (!isValidFile(file.getOriginalFilename())){
             redirect.addFlashAttribute("message", "Only images can be uploaded!");
-            return "redirect:/lib/books/add";
+            return "redirect:/lib-books/add";
         }
 
         String[] names = bookAddDTO.getAuthors().split(";");
@@ -103,7 +103,7 @@ public class BookEditorController {
 
         bookService.updateBook(book);
         redirect.addFlashAttribute("message", "Book successfully added!");
-        return "redirect:/lib/books";
+        return "redirect:/lib-books";
     }
 
     @GetMapping("/update")
@@ -124,7 +124,7 @@ public class BookEditorController {
 
         if (!isValidFile(file.getOriginalFilename())){
             redirect.addFlashAttribute("message", "Only images can be uploaded!");
-            return "redirect:/lib/books/add";
+            return "redirect:/lib-books/add";
         }
 
         String[] names = bookAddDTO.getAuthors().split(";");
@@ -172,7 +172,7 @@ public class BookEditorController {
         bookService.updateBook(book);
         
         redirect.addFlashAttribute("message", "Book successfully updated!");
-        return "redirect:/lib/books";
+        return "redirect:/lib-books";
     }
 
 }
