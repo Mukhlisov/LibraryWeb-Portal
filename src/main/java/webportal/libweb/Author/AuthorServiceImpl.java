@@ -3,6 +3,9 @@ package webportal.libweb.Author;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -51,6 +54,17 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void deleteRelationShip(Author author, Book book) {
         repository.deleteRelationShip(author.getId(), book.getId());
+    }
+
+    @Override
+    public List<Author> findAllAuthors(String phrase) {
+        return repository.findByPhrase(phrase);
+    }
+
+    @Override
+    public Page<Author> findPaginated(int page, int page_size) {
+        Pageable pageable = PageRequest.of(page - 1, page_size);
+        return repository.findAll(pageable);
     }
 
     

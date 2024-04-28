@@ -2,6 +2,10 @@ package webportal.libweb.Book;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,8 +33,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> findByTitle(String title) {
-        return repository.findByTitle(title);
+    public List<Book> findByTitle(String phrase) {
+        return repository.findByPhrase(phrase);
     }
 
     /* @Override
@@ -47,11 +51,18 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void deleteBook(Long id) {
+        repository.deleteRelationShips(id);
         repository.deleteById(id);
     }
 
     @Override
     public Optional<Book> findById(Long id) {
         return repository.findById(id);
+    }
+
+    @Override
+    public Page<Book> findPaginated(int page, int page_size) {
+        Pageable pageable = PageRequest.of(page - 1, page_size);
+        return repository.findAll(pageable);
     }
 }
