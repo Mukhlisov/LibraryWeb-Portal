@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import webportal.libweb.FileUploader.StorageProperties;
+import webportal.libweb.LibManagementSys.FileUploader.StorageProperties;
 
 import java.nio.file.Paths;
 
