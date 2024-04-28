@@ -1,11 +1,11 @@
-package webportal.libweb.FileUploader;
+package webportal.libweb.LibManagementSys.FileUploader;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("storage")
 public class StorageProperties {
 
-	private String uploadDir = "D://bookCovers/";
+	private String uploadDir = "E://bookCovers/";
 
 	public String getDir() {
 		return uploadDir;

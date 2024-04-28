@@ -1,4 +1,4 @@
-package webportal.libweb.DTOs;
+package webportal.libweb.LibManagementSys.dto;
 
 
 import lombok.Getter;

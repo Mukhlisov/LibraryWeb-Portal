@@ -1,4 +1,4 @@
-package webportal.libweb.FileUploader;
+package webportal.libweb.LibManagementSys.FileUploader;
 
 import org.springframework.web.multipart.MultipartFile;
 
