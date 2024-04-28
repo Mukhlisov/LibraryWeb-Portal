@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" 
-    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/styles/background.css}">
     <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+    <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+    <script th:src="@{/scripts/validation.js}"></script>
+
     <title>Add</title>
 </head>
 <body>
@@ -35,6 +37,7 @@
             <div class="mb-3" style="width: 50%;">
                 <label class="form-label"><b>Обложка</b></label>
                 <input type="file" accept=".jpg,.jpeg,.png" name = "file" class="form-control border-dark">
+                <p class="fs-6">Загрузите файл весом до 5 МБ</p>
                 <div th:if="${message}"><label th:text="${message}" style="color:red;"></label></div>
               </div>
             <div class="col-12">

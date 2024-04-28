@@ -3,17 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" 
-    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/styles/background.css}">
     <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+    <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+
     <title>Manage menu</title>
 </head>
 <body>
     <div class = "sticky-top" th:replace = "~{elements :: navigbar}"></div>
+    <div th:replace="~{elements :: contentList}"></div>
 
     <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
-        <h1>Список Авторов</h1> <span th:if="${message}"><h2 th:text="${message}" style="color:greenyellow;"></h2></span>
+
+        <div class="navbar bg-transient">
+            <div class="container-fluid d-flex justify-content-between">
+                <a class="nav-item d-inline fs-1 link-dark" type="button" title="Выбрать список" data-bs-toggle="offcanvas" data-bs-target="#ManageMenu">Список авторов</a>
+                <div th:if="${message}">
+                    <div class="alert alert-success" role="alert" th:text="${message}"></div>
+                </div>
+                <form class="nav-item" method="post" th:action = "@{/lib-authors/search}">
+                    <input class="form-control me-2" name="phrase" type="search" placeholder="Автор" aria-label="Поиск">
+                </form>
+            </div>
+        </div>
+
+
         <table class = "table table-bordered border-dark table-hover">
             <thead class="table-dark">
                 <tr>
@@ -30,6 +45,10 @@
                 </tr>
             </tbody>
         </table>
+
+        <div th:if="${pageable}">
+            <div th:replace="~{elements :: pagination_m}"></div>
+        </div>
 
         <a th:href="@{/lib-authors/add}" class="btn btn-outline-primary">Добавить нового автора</a>
     </div>

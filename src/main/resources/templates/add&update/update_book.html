@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" 
-    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/styles/background.css}">
     <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+    <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+    <script th:src="@{/scripts/validation.js}"></script>
+    
     <title>Update</title>
 </head>
 <body>
@@ -14,46 +16,49 @@
 
     <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
 
-        <div class = "row">
-            <div class="col col-md-auto" style="width: 70%;">
+        <div class = "hstack gap-1">
+            <div style="width: 70%;">
                 <form method="post" enctype="multipart/form-data" th:action = "@{/lib-books/update}">
                     <input type="hidden" th:value = "${book.id}" name="id">
-                    <div class="mb-3" style="width: 50%;">
+                    <div class="mb-3" style="width: 70%;">
                         <label class="form-label"><b>Название книги</b></label>
                         <input type="text" th:value="${book.title}" name = "title" class="form-control border-dark" required>
                     </div>
-                    <div class="mb-3" style="width: 50%;">
+                    <div class="mb-3" style="width: 70%;">
                         <label class="form-label"><b>Автор</b></label>
                         <input type="text" th:value="${book.getAllAuthors()}" name = "authors" class="form-control border-dark" aria-describedby="authorsHelp" placeholder="Фамилия Имя Отчество">
                         <div class="form-text">Введите полное имя автора, если авторов несколько, то разделите их через ';'</div>
                     </div>
-                    <div class="mb-3" style="width: 10%">
+                    <div class="mb-3" style="width: 15%">
                         <label class="form-label"><b>Год</b></label>
                         <input type="number" th:value="${book.year}" name = "year" class="form-control border-dark">
                     </div>
-                    <div class="mb-3" style="width: 10%">
+                    <div class="mb-3" style="width: 15%">
                         <label class="form-label"><b>Количество</b></label>
                         <input type="number" th:value="${book.quantity}" name = "quantity" class="form-control border-dark">
                     </div>
-                    <div class="mb-3" style="width: 50%;">
+                    <div class="mb-3" style="width: 70%;">
                         <label class="form-label"><b>Обложка</b></label>
-                        <input type="file" name = "file" class="form-control border-dark">
+                        <input type="file" accept=".jpg,.jpeg,.png" name = "file" class="form-control border-dark">
+                        <p class="fs-6">Загрузите файл весом до 5 МБ</p>
                         <div th:if="${message}"><label th:text="${message}" style="color:red;"></label></div>
                       </div>
                     <div class="col-12">
                         <button class="btn btn-outline-primary" type="submit">Обновить данные</button>
-                        <form action="get" class="mt-2"><a th:href="@{/lib-books}" class="btn btn-outline-primary">Назад</a></form>
+                        <a th:href="@{/lib-books}" class="btn btn-outline-primary">Назад</a>
                     </div>
                 </form>
             </div>
-    
-            <div class="col col-md-auto">
+            <div class="vr"></div>
+            <div class="p-2">
                 <img th:src="@{/covers/{filename}(filename=${book.cover})}" class="img-fluid rounded-start" alt="No image yet...">
             </div>
         </div>
-
-
-        
+        <form method="post" th:action="@{/lib-books/delete}" class="mt-2">
+            <input type="hidden" th:value = "${book.id}" name="id">
+            <input type="hidden" th:value = "${book.cover}" name="cover">
+            <input type="submit" class="btn btn-danger" value="Удалить книгу"></input>
+        </form>
     </div>
     
 </body>
