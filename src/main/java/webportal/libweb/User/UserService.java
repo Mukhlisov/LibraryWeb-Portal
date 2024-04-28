@@ -3,13 +3,11 @@ package webportal.libweb.User;
 import java.util.List;
 import java.util.Optional;
 
-import webportal.libweb.DTOs.UserRegDTO;
-
 public interface UserService {
     List<User> findAllUsers();
     User findByPhoneNumber(String phoneNumber);
     Optional<User> findById(Long id);
-    void saveUser(UserRegDTO user);
+    //void saveUser(UserRegDTO user);
     void updateUser(User user);
     void deleteById(Long id);
     void deleteByPhoneNumber(String phone);

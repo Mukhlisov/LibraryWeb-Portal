@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
-import webportal.libweb.DTOs.UserRegDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,8 +41,8 @@ public class UserRestController {
     }
 
     @PostMapping("/save")
-    public String saveUser(@RequestBody UserRegDTO user) {
-        service.saveUser(user);
+    public String saveUser(@RequestBody User user) {
+        //service.saveUser(user);
         return "Success! User has been saved";
     }
     

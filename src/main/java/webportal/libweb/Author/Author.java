@@ -28,7 +28,7 @@ public class Author {
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<>();
 
     public Author(){}

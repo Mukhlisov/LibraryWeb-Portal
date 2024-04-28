@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import webportal.libweb.DTOs.UserRegDTO;
 
 @Service
 @AllArgsConstructor
@@ -20,7 +19,7 @@ public class UserServiceImpl implements UserService{
         return repository.findAll();
     }
 
-    @Override
+   /*  @Override
     public void saveUser(UserRegDTO user) {
         repository.save(new User(
             user.getFirstName(),
@@ -29,7 +28,7 @@ public class UserServiceImpl implements UserService{
             user.getPassword(),
             user.getRole()
         ));            
-    }
+    } */
 
     @Transactional
     @Override
