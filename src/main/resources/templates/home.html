@@ -13,6 +13,7 @@
 
 <body>
   <div class = "sticky-top" th:replace = "~{elements :: navigbar}"></div>
+  <div th:replace = "~{elements :: modalLogIn}"></div>
 
   <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
     <div th:each = "book : ${bookList}">

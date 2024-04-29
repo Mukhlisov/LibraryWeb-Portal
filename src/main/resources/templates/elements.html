@@ -15,8 +15,28 @@
       <form class="d-flex container" method="post" th:action = "@{/}">
         <input class="form-control me-2" name="title" type="search" placeholder="Поиск" aria-label="Поиск">
       </form>
-      <a class="navbar-brand" th:href="@{/login}"><img th:src = "@{/icons/icons8-male-user-50.png}"></a>
+      <!-- <a class="navbar-brand" th:href="@{/login}"><img th:src = "@{/icons/icons8-male-user-50.png}"></a> -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#LogInModal">Войти</button>
     </nav>
+
+    <!-- MODAL WINDOW FOR LOGIN -->
+    <div th:fragment="modalLogIn" class="modal fade" id="LogInModal" tabindex="-1" aria-labelledby="LogInModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="LogInModalLabel">Вход</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+          </div>
+          <div class="modal-body">
+            Body
+          </div>
+          <div class="modal-footer d-flex justify-content-between">
+            <span>Еще нет аккаунта? <a class="link-primary" th:href="@{/register}">Зарегистрироваться</a></span>
+            <button type="button" class="btn btn-outline-primary">Войти</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- OFFCANVAS FOR BOOKS AND AUTHORS MANAGMENT-->
     <div th:fragment="contentList" class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="ManageMenu">
