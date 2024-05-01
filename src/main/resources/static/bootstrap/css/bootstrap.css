@@ -5402,7 +5402,7 @@ textarea.form-control-lg {
   filter: var(--bs-btn-close-white-filter);
 }
 
-.toast {
+/* .toast {
   --bs-toast-zindex: 1090;
   --bs-toast-padding-x: 0.75rem;
   --bs-toast-padding-y: 0.5rem;
@@ -5469,7 +5469,7 @@ textarea.form-control-lg {
 .toast-body {
   padding: var(--bs-toast-padding-x);
   word-wrap: break-word;
-}
+} */
 
 .modal {
   --bs-modal-zindex: 1055;

@@ -94,7 +94,7 @@ public class BookEditController {
         
                                     
         if (!isValidFile(file.getOriginalFilename())){
-            redirect.addFlashAttribute("message", "Неверный тип файла!");
+            redirect.addFlashAttribute("message", "Ошибка: неверный тип файла!");
             return "redirect:/lib-books/add";
         }
 
@@ -134,7 +134,7 @@ public class BookEditController {
 
         bookService.updateBook(book);
         redirect.addFlashAttribute("message", "Книга успешно добавлена!");
-        return "redirect:/lib-books";
+        return "redirect:/lib-books/page/1";
     }
 
     @GetMapping("/update")
@@ -155,8 +155,8 @@ public class BookEditController {
                         RedirectAttributes redirect){
 
         if (!isValidFile(file.getOriginalFilename())){
-            redirect.addFlashAttribute("message", "Неверный тип файла!");
-            return "redirect:/lib-books/add";
+            redirect.addFlashAttribute("message", "Ошибка: неверный тип файла!");
+            return "redirect:/lib-books/update?id="+bookAddDTO.getId();
         }
 
         String[] names = bookAddDTO.getAuthors().split(";");
@@ -204,7 +204,7 @@ public class BookEditController {
         bookService.updateBook(book);
         
         redirect.addFlashAttribute("message", "Книга была успешно обновлена!");
-        return "redirect:/lib-books";
+        return "redirect:/lib-books/page/1";
     }
 
     @PostMapping("/delete")

@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/styles/background.css}">
+    
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
     <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
+
     <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
     <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
-    <script th:src="@{/scripts/validation.js}"></script>
+    
+    <script th:src="@{/scripts/fileInputValidation.js}"></script>
 
     <title>Add</title>
 </head>
@@ -38,7 +41,6 @@
                 <label class="form-label"><b>Обложка</b></label>
                 <input type="file" accept=".jpg,.jpeg,.png" name = "file" class="form-control border-dark">
                 <p class="fs-6">Загрузите файл весом до 5 МБ</p>
-                <div th:if="${message}"><label th:text="${message}" style="color:red;"></label></div>
               </div>
             <div class="col-12">
                 <button class="btn btn-outline-primary" type="submit">Добавить</button>
@@ -47,6 +49,9 @@
         </form>
 
     </div>
+    <div id="message" th:attr="data-message=${message}" style="display: none;"></div>
+    <div class="toast-overlay" id="toast-overlay"></div>
+    <script th:src="@{/scripts/toasts.js}"></script>
     
 </body>
 </html>

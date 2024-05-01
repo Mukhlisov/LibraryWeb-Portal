@@ -3,24 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/styles/background.css}">
+
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
     <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
+
     <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
     <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
     
+    <script th:src="@{/scripts/regFormValidation.js}"></script>
+
     <title>LibHub</title>
 </head>
 
 <body>
   <div class = "sticky-top" th:replace = "~{elements :: navigbar}"></div>
   <div th:replace = "~{elements :: modalLogIn}"></div>
+  <div th:replace = "~{elements :: modalReg}"></div>
 
   <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
+    
     <div th:each = "book : ${bookList}">
       <a class="card mb-3 text-bg-light border border-black" th:href="@{'/book/?id=' + ${book.id}}" target="_blank" style="max-width: 540px; text-decoration: none;">
         <div class="row g-0">
           <div class="col-md-4">
-            <img th:src="@{/covers/{filename}(filename=${book.cover})}" class="img-fluid rounded-start" alt="No image yet...">
+            <img th:src="@{'/covers/'+${book.cover}}" class="img-fluid rounded-start" alt="No image yet...">
           </div>
           <div class="col-md-8">
             <div class="card-body">
@@ -44,7 +50,10 @@
       </a>
     </div>
 
-  </div> 
+  </div>
 
+  <div id="message" th:attr="data-message=${message}" style="display: none;"></div>
+  <div class="toast-overlay" id="toast-overlay"></div>
+  <script th:src="@{/scripts/toasts.js}"></script>
 </body>
 </html>

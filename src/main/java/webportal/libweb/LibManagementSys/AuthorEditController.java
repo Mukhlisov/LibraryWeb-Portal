@@ -69,7 +69,7 @@ public class AuthorEditController {
         Author author = new Author(authorDto.getFullName());
         authorService.saveAuthor(author);
         redirect.addFlashAttribute("message", "Автор был успешо добавлен!");
-        return "redirect:/lib-authors";
+        return "redirect:/lib-authors/page/1";
     }
 
     @GetMapping("/update")
@@ -90,7 +90,7 @@ public class AuthorEditController {
         authorService.updateAuthor(author);
 
         redirect.addFlashAttribute("message", "Автор был успешно обновлен!");
-        return "redirect:/lib-authors";
+        return "redirect:/lib-authors/page/1";
     }
 
     @PostMapping("/delete")
@@ -99,6 +99,6 @@ public class AuthorEditController {
 
         redirect.addFlashAttribute("message", "Автор был успешно удален!");
 
-        return "redirect:/lib-authors";
+        return "redirect:/lib-authors/page/1";
     }
 }

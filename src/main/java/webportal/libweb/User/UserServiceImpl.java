@@ -19,16 +19,10 @@ public class UserServiceImpl implements UserService{
         return repository.findAll();
     }
 
-   /*  @Override
-    public void saveUser(UserRegDTO user) {
-        repository.save(new User(
-            user.getFirstName(),
-            user.getLastName(),
-            user.getPhoneNumber(),
-            user.getPassword(),
-            user.getRole()
-        ));            
-    } */
+    @Override
+    public void saveUser(User user) {
+        repository.save(user);           
+    }
 
     @Transactional
     @Override
