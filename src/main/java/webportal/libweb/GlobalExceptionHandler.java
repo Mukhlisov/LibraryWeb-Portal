@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 public class GlobalExceptionHandler{
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseEntity handleMaxSizeException(MaxUploadSizeExceededException exc) {
+    public ResponseEntity<?> handleMaxSizeException(MaxUploadSizeExceededException exc) {
         return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body("Файл превышает максимально допустимый размер!");
     }
 }

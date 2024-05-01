@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
