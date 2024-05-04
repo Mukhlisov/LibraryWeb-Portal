@@ -3,6 +3,7 @@ package com.github.mukhlisov.impl;
 import java.util.List;
 import java.util.Optional;
 
+import com.github.mukhlisov.dto.AuthorDto;
 import com.github.mukhlisov.Author;
 import com.github.mukhlisov.AuthorService;
 import com.github.mukhlisov.Book;
@@ -49,8 +50,9 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void saveAuthor(Author author) {
-        repository.save(author);
+    public Author saveAuthor(AuthorDto authorDto) {
+        Author author = new Author(authorDto.getFullName());
+        return repository.save(author);
     }
 
     @Transactional

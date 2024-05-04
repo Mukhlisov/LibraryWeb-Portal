@@ -1,8 +1,9 @@
 package com.github.mukhlisov;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import com.github.mukhlisov.dto.AuthorAddDTO;
+import com.github.mukhlisov.dto.AuthorDto;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,29 +21,26 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RequestMapping("/lib-authors")
 public class AuthorEditController {
+    
+    private static final int PAGE_SIZE = 6; 
+    private static final int PAGES_IN_ROW = 4;
 
     private final AuthorService authorService;
 
     @GetMapping
     public String viewAllAuthors(@RequestParam(name = "phrase", required = true, defaultValue = "")String phrase, Model model){
-        if (!phrase.isEmpty()){
-            model.addAttribute("listAuthor", authorService.findAllAuthors(phrase));
-            model.addAttribute("pageable", false);
-            return "author_manager";
-        }
         return "redirect:/lib-authors/page/1";
     }
 
     @GetMapping("/page/{page_no}")
     public String viewPaginated(@PathVariable(name="page_no") int page_no, Model model) {
         if (page_no < 1){
-            return "no_content";
+            return "redirect:/lib-authors/page/1";
         }
-        int page_size = 6, pages_in_row = 4;
 
-        Page<Author> page = authorService.findPaginated(page_no, page_size);
+        Page<Author> page = authorService.findPaginated(page_no, PAGE_SIZE);
         model.addAttribute("pageable", true);
-        model.addAttribute("pagesAmount", pages_in_row);
+        model.addAttribute("pagesAmount", PAGES_IN_ROW);
         model.addAttribute("currPage", page_no);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("listAuthor", page.getContent());
@@ -52,9 +50,10 @@ public class AuthorEditController {
     
 
     @PostMapping("/search")
-    public String searchForAuthors(@RequestParam(name = "phrase") String phrase, RedirectAttributes redirect){
-        redirect.addAttribute("phrase", phrase);
-        return "redirect:/lib-authors";
+    public String searchForAuthors(@RequestParam(name = "phrase") String phrase, Model model){
+        model.addAttribute("listAuthor", authorService.findAllAuthors(phrase));
+        model.addAttribute("pageable", false);
+        return "author_manager";
     }
 
     @GetMapping("/add")
@@ -63,26 +62,21 @@ public class AuthorEditController {
     }
 
     @PostMapping("/add")
-    public String addNewAuthor(@ModelAttribute AuthorAddDTO authorDto, RedirectAttributes redirect){
-        Author author = new Author(authorDto.getFullName());
-        authorService.saveAuthor(author);
+    public String addNewAuthor(@ModelAttribute AuthorDto authorDto, RedirectAttributes redirect){
+        authorService.saveAuthor(authorDto);
         redirect.addFlashAttribute("message", "Автор был успешо добавлен!");
         return "redirect:/lib-authors/page/1";
     }
 
     @GetMapping("/update")
-    public String updateAuthorForm(@RequestParam(name = "id", defaultValue = "-1") Long id, Model model){
+    public String updateAuthorForm(@RequestParam(name = "id", defaultValue = "-1") Long id, Model model) throws NoSuchElementException{
         Optional<Author> author = authorService.findById(id);
-        if (author.isEmpty()){
-            return "no_content";
-        } else {
-            model.addAttribute("author", author.get());
-            return "add&update/update_author";
-        }
+        model.addAttribute("author", author.get());
+        return "add&update/update_author";
     }
 
     @PostMapping("/update")
-    public String updateAuthor(@ModelAttribute AuthorAddDTO authorDto, RedirectAttributes redirect){
+    public String updateAuthor(@ModelAttribute AuthorDto authorDto, RedirectAttributes redirect){
         Author author = authorService.findById(authorDto.getId()).get();
         author.setFullName(authorDto.getFullName());
         authorService.updateAuthor(author);
@@ -94,9 +88,8 @@ public class AuthorEditController {
     @PostMapping("/delete")
     public String deleteAuthor(@RequestParam(name = "id") Long id, RedirectAttributes redirect){
         authorService.deleteById(id);
-
+        
         redirect.addFlashAttribute("message", "Автор был успешно удален!");
-
         return "redirect:/lib-authors/page/1";
     }
 }

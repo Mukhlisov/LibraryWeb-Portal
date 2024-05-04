@@ -1,13 +1,11 @@
 package com.github.mukhlisov;
 
-import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.github.mukhlisov.dto.BookAddDTO;
+
+import com.github.mukhlisov.dto.BookDto;
 
 import lombok.AllArgsConstructor;
 
@@ -27,40 +26,32 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequestMapping("/lib-books")
 public class BookEditController {
 
+    private static final int PAGE_SIZE = 6;
+    private static final int PAGES_IN_ROW = 4;
+
     private static final String noCover = "noCover.jpg";
 
     private final BookService bookService;
     private final StorageService storageService;
-    private final AuthorService authorService;
 
     private static boolean isValidFile(String filename){
-        if(filename.isEmpty()){
-            return true;
-        }
-        String extension = filename.substring(filename.lastIndexOf('.') + 1);
-        return extension.matches("jpg|jpeg|png");
+        return filename.substring(filename.lastIndexOf('.') + 1).matches("jpg|jpeg|png");
     }
 
     @GetMapping
-    public String viewAllBooks(@RequestParam(name = "phrase", defaultValue = "") String phrase, Model model){
-        if (!phrase.isEmpty()){
-            model.addAttribute("listBook", bookService.findByTitle(phrase));
-            model.addAttribute("pageable", false);
-            return "book_manager";
-        }
+    public String viewAllBooks(){
         return "redirect:/lib-books/page/1";
     }
 
     @GetMapping("/page/{page_no}")
     public String viewPaginated(@PathVariable(name="page_no") int page_no, Model model) {
         if (page_no < 1){
-            return "no_content";
+            return "redirect:/lib-books/page/1";
         }
-        int page_size = 6, pages_in_row = 4;
 
-        Page<Book> page = bookService.findPaginated(page_no, page_size);
+        Page<Book> page = bookService.findPaginated(page_no, PAGE_SIZE);
         model.addAttribute("pageable", true);
-        model.addAttribute("pagesAmount", pages_in_row);
+        model.addAttribute("pagesAmount", PAGES_IN_ROW);
         model.addAttribute("currPage", page_no);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("listBook", page.getContent());
@@ -69,9 +60,10 @@ public class BookEditController {
     }
 
     @PostMapping("/search")
-    public String searchForBooks(@RequestParam(name = "phrase") String phrase, RedirectAttributes redirect){
-        redirect.addAttribute("phrase", phrase);
-        return "redirect:/lib-books";
+    public String searchForBooks(@RequestParam(name = "phrase") String phrase, Model model){
+        model.addAttribute("listBook", bookService.findByTitle(phrase));
+        model.addAttribute("pageable", false);
+        return "book_manager";
     }
 
     @GetMapping("/add")
@@ -79,128 +71,55 @@ public class BookEditController {
         return "add&update/add_book";
     }
 
-    @SuppressWarnings("null")
     @PostMapping("/add")
-    public String addNewBook(@ModelAttribute BookAddDTO bookAddDTO,
+    public String addNewBook(@ModelAttribute BookDto bookDto,
                                 @RequestParam(name = "file") MultipartFile file,
                                 RedirectAttributes redirect) {
         
-                                    
-        if (!isValidFile(file.getOriginalFilename())){
-            redirect.addFlashAttribute("message", "Ошибка: неверный тип файла!");
-            return "redirect:/lib-books/add";
-        }
-
-        String[] names = bookAddDTO.getAuthors().split(";");
-        String name;
-        Author author;
-        Book book = new Book(bookAddDTO.getTitle(),
-                            bookAddDTO.getQuantity(),
-                            bookAddDTO.getYear(),
-                            file.getOriginalFilename(),
-                            new HashSet<>(names.length)
-                            );
-        book = bookService.saveBook(book);
-
-        for (String s : names) {
-            name = s.trim();
-            if (name.isEmpty()) {
-                continue;
-            }
-            author = authorService.findByFullName(name);
-            if (author != null) {
-                author.getBooks().add(book);
-            } else {
-                author = new Author(name);
-                author.getBooks().add(book);
-                authorService.saveAuthor(author);
-            }
-            book.getAuthors().add(author);
-        }
         
-        if (!file.getOriginalFilename().isEmpty()){
-            book.setCover(file.getOriginalFilename());
-            storageService.upload(file);
+        if (file.getOriginalFilename().isEmpty()){
+            bookDto.setCover(noCover);
         } else{
-            book.setCover(noCover);
+            if (isValidFile(file.getOriginalFilename())){
+                storageService.upload(file);
+                bookDto.setCover(file.getOriginalFilename());
+            } else{
+                redirect.addFlashAttribute("message", "Ошибка: неверный тип файла!");
+                return "redirect:/lib-books/add";
+            }
         }
-
-        bookService.updateBook(book);
+        bookService.saveBook(bookDto);
         redirect.addFlashAttribute("message", "Книга успешно добавлена!");
         return "redirect:/lib-books/page/1";
     }
 
     @GetMapping("/update")
-    public String updateBookForm(@RequestParam(name="id", defaultValue = "-1") Long id, Model model){
+    public String updateBookForm(@RequestParam(name="id", defaultValue = "-1") Long id, Model model) throws NoSuchElementException{
         Optional<Book> book = bookService.findById(id);
-        if (book.isEmpty()){
-            return "no_content";
-        } else {
-            model.addAttribute("book", book.get());
-            return "add&update/update_book";
-        }
+        model.addAttribute("book", book.get());
+        return "add&update/update_book";
     }
 
-    @SuppressWarnings("null")
     @PostMapping("/update")
-    public String updateBook(@ModelAttribute BookAddDTO bookAddDTO,
+    public String updateBook(@ModelAttribute BookDto bookDto,
                         @RequestParam(name = "file") MultipartFile file,
                         RedirectAttributes redirect){
 
-        if (!isValidFile(file.getOriginalFilename())){
-            redirect.addFlashAttribute("message", "Ошибка: неверный тип файла!");
-            return "redirect:/lib-books/update?id="+bookAddDTO.getId();
-        }
-
-        String[] names = bookAddDTO.getAuthors().split(";");
-        String name;
-        Book book = bookService.findById(bookAddDTO.getId()).get();
-        Set<Author> toDelete = new HashSet<>(book.getAuthors());
-        Author author;
-
-
-        for (String s : names) {
-            name = s.trim();
-            if (name.isEmpty()) {
-                continue;
-            }
-            author = authorService.findByFullName(name);
-            if (author != null) {
-                if (toDelete.contains(author)) {
-                    toDelete.remove(author);
-                } else {
-                    author.getBooks().add(book);
-                    book.getAuthors().add(author);
-                    authorService.saveAuthor(author);
-                }
-            } else {
-                author = new Author(name);
-                author.getBooks().add(book);
-                book.getAuthors().add(author);
-
-                authorService.saveAuthor(author);
-            }
-        }
-
-        for (Author author_toDelete : toDelete) {
-            book.getAuthors().remove(author_toDelete);
-            authorService.deleteRelationShip(author_toDelete, book);
-        }
-        
         if (!file.getOriginalFilename().isEmpty()){
-            if (!book.getCover().equals(noCover)){
-                storageService.deleteByName(book.getCover());
+            if (isValidFile(file.getOriginalFilename())){
+                storageService.upload(file);
+                bookDto.setCover(file.getOriginalFilename());
+            } else{
+                redirect.addFlashAttribute("message", "Ошибка: неверный тип файла!");
+                return "redirect:/lib-books/update?id=%d".formatted(bookDto.getId());
             }
-            book.setCover(file.getOriginalFilename());
-            storageService.upload(file);
         }
-        bookService.updateBook(book);
-        
-        redirect.addFlashAttribute("message", "Книга была успешно обновлена!");
+        bookService.updateBook(bookDto);
+        redirect.addFlashAttribute("message", "Книга успешно обновлена!");
         return "redirect:/lib-books/page/1";
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public String deleteBook(@RequestParam(name = "id") Long id,
                                 @RequestParam(name = "cover") String cover,
                                 RedirectAttributes redirect){

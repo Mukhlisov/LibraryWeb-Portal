@@ -24,6 +24,7 @@
             <div style="width: 70%;">
                 <form method="post" enctype="multipart/form-data" th:action = "@{/lib-books/update}">
                     <input type="hidden" th:value = "${book.id}" name="id">
+                    <input type="hidden" th:value = "${book.cover}" name="cover">
                     <div class="mb-3" style="width: 70%;">
                         <label class="form-label"><b>Название книги</b></label>
                         <input type="text" th:value="${book.title}" name = "title" class="form-control border-dark" required>

@@ -1,6 +1,7 @@
 package com.github.mukhlisov.repository;
 
 import java.util.List;
+import java.util.Set;
 
 import com.github.mukhlisov.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,11 +19,27 @@ public interface BookRepo extends JpaRepository<Book, Long> {
     @Query(value = "SELECT * FROM books ORDER BY RANDOM() LIMIT :limit", nativeQuery = true)
     List<Book> getRandomBooks(@Param("limit") int limit);
 
-    @Query(value = "DELETE FROM authors_books WHERE books_id = :book_id", nativeQuery = true)
     @Modifying
+    @Query(value = "INSERT INTO authors_books (authors_id, books_id) SELECT :author_id, :book_id WHERE NOT EXISTS (SELECT 1 FROM authors_books WHERE authors_id = :author_id AND books_id = :book_id);", nativeQuery = true)
+    void createRelationShip(@Param("book_id") Long book_id, @Param("author_id") Long author_id);
+
+    @Modifying
+    @Query(value = "DELETE FROM authors_books WHERE books_id = :book_id", nativeQuery = true)
     int deleteRelationShips(@Param("book_id") Long id);
     
-    
+    @Modifying
+    @Query(value = "DELETE FROM authors_books WHERE books_id = :book_id AND authors_id = :author_id", nativeQuery = true)
+    int deleteRelationShip(@Param("book_id") Long book_id, @Param("author_id") Long author_id);
+
+    @Query(value = "SELECT id FROM authors WHERE authors.full_name = :fullName", nativeQuery = true)
+    Long findAuthorByFullName(@Param("fullName") String fullName);
+
+    @Modifying
+    @Query(value = "INSERT INTO authors (id, full_name) values (nextval('author_seq'), :fullName)", nativeQuery = true)
+    int insertAuthor(@Param("fullName") String fullName);
+
+    @Query(value = "SELECT full_name FROM authors, authors_books WHERE authors_books.books_id = :book_id AND authors_books.authors_id = id", nativeQuery = true)
+    Set<String> findAllAuthorsByBookId(@Param("book_id") Long book_id);
     //TODO custom query
     //Book findByAuthor(String author_name);
 

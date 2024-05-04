@@ -5,14 +5,16 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 
+import com.github.mukhlisov.dto.BookDto;
+
 public interface BookService {
     List<Book> findAllBook();
     List<Book> getRandomBooks();
     Page<Book> findPaginated(int page, int page_size);
     Optional<Book> findById(Long id);
-    Book saveBook(Book book);
+    Book saveBook(BookDto book);
     List<Book> findByTitle(String title);
-    Book updateBook(Book book);
+    Book updateBook(BookDto bookDto);
     void deleteBook(Long id);
     //Book findByAuthor(String author);
 }

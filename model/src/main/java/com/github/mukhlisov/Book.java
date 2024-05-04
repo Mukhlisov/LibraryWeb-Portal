@@ -1,5 +1,6 @@
 package com.github.mukhlisov;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -36,12 +37,27 @@ public class Book {
 
     public Book(){}
 
+    public Book(Long id, String title, Integer quantity, Integer year, String cover) {
+        this.id = id;
+        this.title = title;
+        this.quantity = quantity;
+        this.year = year;
+        this.cover = cover;
+    }
+
     public Book(String title, Integer quantity, Integer year, String cover, Set<Author> authors){
         this.title = title;
         this.quantity = quantity;
         this.year = year;
         this.cover = cover;
         this.authors = authors;
+    }
+
+    public Book(String title, Integer quantity, Integer year, String cover) {
+        this.title = title;
+        this.quantity = quantity;
+        this.year = year;
+        this.cover = cover;
     }
 
     public String getAllAuthors(){
