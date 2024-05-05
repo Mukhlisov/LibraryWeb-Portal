@@ -1,4 +1,4 @@
-package com.github.mukhlisov;
+package com.github.mukhlisov.dto;
 
 import lombok.Getter;
 import lombok.Setter;

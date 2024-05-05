@@ -1,16 +1,17 @@
 package com.github.mukhlisov;
 
-import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
-@Getter
-public enum Role {
-    LIBRARIAN("librarian"),
-    OWNER("owner");
+@RequiredArgsConstructor
+public enum Role implements GrantedAuthority {
+    USER("USER");
 
-    private final String representation;
+    private final String role;
 
-    Role (String representation){
-        this.representation = representation;
+
+    @Override
+    public String getAuthority() {
+        return role;
     }
-
 }

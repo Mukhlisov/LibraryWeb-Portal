@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.github.mukhlisov.User;
 import com.github.mukhlisov.UserService;
+import com.github.mukhlisov.dto.UserRegDto;
 import com.github.mukhlisov.repository.UserRepo;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +24,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(User user) {
-        repository.save(user);           
+    public User saveUser(UserRegDto userDto) {
+        User user = new User(userDto.getFirstName(), userDto.getLastName(), 
+        userDto.getPhoneNumber(), userDto.getEmail(), 
+        userDto.getPassword());
+        
+        return repository.save(user);           
     }
 
     @Transactional
@@ -40,7 +45,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByPhoneNumber(String phoneNumber) {
+    public Optional<User> findByPhoneNumber(String phoneNumber) {
         return repository.findByPhoneNumber(phoneNumber);
     }
 

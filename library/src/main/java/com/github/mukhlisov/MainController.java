@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 
 import java.util.Optional;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +40,7 @@ public class MainController {
         return "redirect:/search";
     }
 
+    @PreAuthorize("hasAnyAuthority('USER')")
     @GetMapping("/book/")
     public String viewBookPage(@RequestParam(name="id", required = true, defaultValue = "-1") Long id, Model model) {
         Optional<Book> wraper = bookService.findById(id);

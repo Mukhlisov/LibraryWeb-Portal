@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.github.mukhlisov.dto.UserRegDto;
 
 import lombok.AllArgsConstructor;
 
@@ -14,9 +15,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 
 @Controller
-@RequestMapping("/reg")
+@RequestMapping("/auth")
 @AllArgsConstructor
-public class UserRegController {
+public class AuthController {
 
     private final UserService userService;
 
@@ -58,16 +59,13 @@ public class UserRegController {
         } else return userDto.getPasswordRep().equals(userDto.getPassword());
     }
 
-    @PostMapping
+    @PostMapping("/reg")
     public String regNewUser(@ModelAttribute UserRegDto userRegDto, RedirectAttributes redirect) {
         if (!isValid(userRegDto)){
             redirect.addFlashAttribute("message", "Ошибка регистрации: неверно введенные данные!");
         } else {
+            userService.saveUser(userRegDto);
             redirect.addFlashAttribute("message", "Вы прошли регистрацию!");
-            User user = new User(userRegDto.getFirstName(), userRegDto.getLastName(), 
-                                userRegDto.getPhoneNumber(), userRegDto.getEmail(), 
-                                userRegDto.getPassword(), Role.OWNER);
-            userService.saveUser(user);
         }
         return "redirect:/";
     }

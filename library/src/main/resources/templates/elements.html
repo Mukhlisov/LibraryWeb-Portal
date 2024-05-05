@@ -24,7 +24,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
           </div>
           <div class="modal-body">
-            <form id="loginForm" method="post" th:action="@{/login}">
+            <form id="loginForm" method="post" th:action="@{/login/process}">
                 <div class="mb-3" style="width: 80%;">
                     <label class="form-label"><b>Номер телефона</b></label>
                     <input type="tel" name="phoneNumber" id="phoneNumber" class="form-control border-dark" oninput="validatePhoneNumber(this)" autocomplete="tel" minlength="11" maxlength="11" required>
@@ -34,12 +34,10 @@
                     <label class="form-label"><b>Пароль</b></label>
                     <input type="password" id="password" name = "password" class="form-control border-dark" minlength="5" autocomplete="new-password" required>
                 </div>
-                <div>
-                    <button class="btn btn-outline-primary" id="submitButton" type="submit">Войти</button>
-                </div>
             </form>
-            <div class="modal-footer d-flex justify-content-between">
-              <span>Еще нет аккаунта? <a class="link-primary" type="button" data-bs-toggle="modal" data-bs-target="#RegModal">Зарегистрироваться</a></span>
+            <div class="modal-footer d-flex justify-content-start">
+                <button class="btn btn-outline-primary me-3" id="submitButton" type="submit">Войти</button>
+                <span>Еще нет аккаунта? <a class="link-primary" type="button" data-bs-toggle="modal" data-bs-target="#RegModal">Зарегистрироваться</a></span>
             </div>
           </div>
         </div>
@@ -55,36 +53,35 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
               </div>
               <div class="modal-body">
-                <form id="regForm" method="post" th:action="@{/reg}">
+                <form id="regForm" method="post" th:action="@{/auth/reg}">
                     <div class="mb-3" style="width: 80%;">
-                        <label class="form-label"><b>Имя</b></label>
+                        <label for="firstName" class="form-label"><b>Имя</b></label>
                         <input type="text" name="firstName" id="firstName" class="form-control border-dark" oninput="validateRussianInput(this)" autocomplete="name" required>
                     </div>
                     <div class="mb-3" style="width: 80%;">
-                        <label class="form-label"><b>Фамилия</b></label>
+                        <label for="lastName" class="form-label"><b>Фамилия</b></label>
                         <input type="text" name="lastName" id="lastName" class="form-control border-dark" oninput="validateRussianInput(this)" autocomplete="family-name" required>
                     </div>
                     <div class="mb-3" style="width: 80%;">
-                        <label class="form-label"><b>Номер телефона</b></label>
+                        <label for="phoneNumber" class="form-label"><b>Номер телефона</b></label>
                         <input type="tel" name="phoneNumber" id="phoneNumber" class="form-control border-dark" oninput="validatePhoneNumber(this)" autocomplete="tel" minlength="11" maxlength="11" required>
                         <small id="phoneLengthError" style="color: red; display: none;">Неверный формат номра телефона</small>
                     </div>
                     <div class="mb-3" style="width: 80%;">
-                        <label class="form-label"><b>Электронная почта</b></label>
+                        <label for="email" class="form-label"><b>Электронная почта</b></label>
                         <input type="email" name="email" id="email" class="form-control border-dark" autocomplete="email">
                     </div>
                     <div class="mb-3" style="width: 80%;">
-                        <label class="form-label"><b>Пароль</b></label>
+                        <label for="password" class="form-label"><b>Пароль</b></label>
                         <input type="password" id="password" name = "password" class="form-control border-dark" minlength="5" autocomplete="new-password" required>
                     </div>
                     <div class="mb-3" style="width: 80%;">
-                        <label class="form-label"><b>Повторите пароль</b></label>
+                        <label for="passwordRep" class="form-label"><b>Повторите пароль</b></label>
                         <input type="password" id="passwordRep" name = "passwordRep" class="form-control border-dark" minlength="5" autocomplete="new-password" required>
                         <small id="passwordMatchError" style="color: red; display: none;">Пароли не совпадают</small>
                     </div>
                         <button class="btn btn-outline-primary" id="submitButton" type="submit">Зарегистрироваться</button>
                         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#LogInModal">Назад</button>
-                    </div>
                 </form>
               </div>
             </div>

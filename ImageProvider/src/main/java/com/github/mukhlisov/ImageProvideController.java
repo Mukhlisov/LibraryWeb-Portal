@@ -1,11 +1,16 @@
 package com.github.mukhlisov;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.web.ErrorProperties;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.SneakyThrows;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +32,7 @@ public class ImageProvideController {
 
     @SneakyThrows
     @GetMapping("/covers/{filename:.+}")
-    public ResponseEntity<byte[]> serveFile(@PathVariable String filename) {
+    public ResponseEntity<byte[]> serveFile(@PathVariable String filename) throws FileNotFoundException {
         UrlResource resource = new UrlResource(Paths.get(source, filename).toUri());
         HttpHeaders headers = new HttpHeaders();
         headers.setCacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic().getHeaderValue());
@@ -45,5 +50,9 @@ public class ImageProvideController {
 
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).headers(headers).body(bytes);
     }
-    
+
+    @ExceptionHandler(FileNotFoundException.class)
+    public ResponseEntity<?> handleFileNotFound(FileNotFoundException exc) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("<h1>Файл не найден</h1><h3>"+exc.getLocalizedMessage()+"</h3>");
+    }
 }

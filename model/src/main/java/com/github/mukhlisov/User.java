@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 @Table(name = "Users")
 @Entity
 @SequenceGenerator(name = "user_gen", sequenceName = "user_seq", allocationSize = 1)
-@RequiredArgsConstructor
 public class User {
 
     @Id
@@ -35,20 +34,31 @@ public class User {
     private String phoneNumber;
 
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
     
     @JsonIgnore
     private String password;
-    
-    @Enumerated(EnumType.STRING)
-    private Role role;
 
-    public User(String firstName, String lastName, String phoneNumber, String email, String password, Role role){
+    public User(String firstName, String lastName, String phoneNumber, String email, String password){
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
-        this.role = role;
     }
 
+    public User(String firstName, String lastName, String phoneNumber, String email, Role role, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.role = role;
+        this.password = password;
+    }
+
+    public User() {
+
+    }
 }
