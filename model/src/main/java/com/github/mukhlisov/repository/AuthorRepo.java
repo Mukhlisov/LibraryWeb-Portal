@@ -24,4 +24,7 @@ public interface AuthorRepo extends JpaRepository<Author, Long>{
 
     @Query(value = "SELECT * FROM authors WHERE Lower(full_name) LIKE lower(concat(:phrase, '%')) or Lower(full_name) LIKE lower(concat('%', :phrase, '%')) or Lower(full_name) LIKE lower(concat('%', :phrase))", nativeQuery = true)
     List<Author> findByPhrase(@Param("phrase") String phrase);
+
+    @Query(value = "SELECT COUNT(authors_books.authors_id) FROM authors_books WHERE authors_books.authors_id = :author_id", nativeQuery = true)
+    int countAuthorRelationShips(@Param("author_id") Long author_id);
 }

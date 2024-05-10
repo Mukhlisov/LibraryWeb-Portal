@@ -34,8 +34,8 @@ public class ImageProvideController {
     @GetMapping("/covers/{filename:.+}")
     public ResponseEntity<byte[]> serveFile(@PathVariable String filename) throws FileNotFoundException {
         UrlResource resource = new UrlResource(Paths.get(source, filename).toUri());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setCacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic().getHeaderValue());
+        /*HttpHeaders headers = new HttpHeaders();
+        headers.setCacheControl(CacheControl.maxAge(5, TimeUnit.MINUTES).cachePublic().getHeaderValue());*/
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
@@ -48,7 +48,7 @@ public class ImageProvideController {
 
         byte[] bytes = outputStream.toByteArray();
 
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).headers(headers).body(bytes);
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(bytes);
     }
 
     @ExceptionHandler(FileNotFoundException.class)

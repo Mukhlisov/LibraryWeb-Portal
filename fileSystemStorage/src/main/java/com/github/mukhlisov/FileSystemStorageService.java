@@ -30,15 +30,15 @@ public class FileSystemStorageService implements StorageService{
     }
 
     @Override
-    public void upload(MultipartFile file) {
+    public void upload(MultipartFile file, String uniqueFilename) {
         try {
 			if (file.isEmpty()) {
 				throw new StorageException("Failed to store empty file.");
 			}
-			Path destinationFile = this.rootLocation.resolve(
-					Paths.get(file.getOriginalFilename()))
+			Path destinationFile = this.rootLocation
+					.resolve(Paths.get(uniqueFilename))
 					.normalize().toAbsolutePath();
-            System.out.println(destinationFile.toString());
+            System.out.println(destinationFile);
 			try (InputStream inputStream = file.getInputStream()) {
 				Files.copy(inputStream, destinationFile,
 					StandardCopyOption.REPLACE_EXISTING);

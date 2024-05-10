@@ -1,8 +1,10 @@
 package com.github.mukhlisov.impl;
 
+import com.github.mukhlisov.Author;
 import com.github.mukhlisov.Book;
 import com.github.mukhlisov.BookService;
 import com.github.mukhlisov.dto.BookDto;
+import com.github.mukhlisov.repository.AuthorRepo;
 import com.github.mukhlisov.repository.BookRepo;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -21,16 +23,17 @@ import java.util.Set;
 public class BookServiceImpl implements BookService {
 
     private static final int LIMIT = 4;
-    private final BookRepo repository;
+    private final BookRepo bookRepo;
+    private final AuthorRepo authorRepo;
 
     @Override
     public List<Book> findAllBook() {
-        return repository.findAll();
+        return bookRepo.findAll();
     }
 
     @Override
     public List<Book> getRandomBooks() {
-        return repository.getRandomBooks(LIMIT);
+        return bookRepo.getRandomBooks(LIMIT);
     }
 
     @Transactional
@@ -38,21 +41,19 @@ public class BookServiceImpl implements BookService {
     public Book saveBook(BookDto bookDto) {
         Book book = new Book(bookDto.getTitle(), bookDto.getQuantity(),
                                 bookDto.getYear(), bookDto.getCover());
-        book = repository.save(book);
+        book = bookRepo.save(book);
         String[] authors = bookDto.getAuthors().split(";");
         for(String name : authors){
             String fullName = name.trim();
-            if (fullName.isEmpty()){
-                continue;
-            }
 
-            Long author_id = repository.findAuthorByFullName(fullName);
-            if (author_id != null){
-                repository.createRelationShip(book.getId(), author_id);
-            } else{
-                repository.insertAuthor(fullName);
-                author_id = repository.findAuthorByFullName(fullName);
-                repository.createRelationShip(book.getId(), author_id);
+            if (!fullName.isEmpty()){
+                Author author = authorRepo.findByFullName(fullName);
+                if (author != null){
+                    bookRepo.createRelationShip(book.getId(), author.getId());
+                } else {
+                    author = authorRepo.save(new Author(fullName));
+                    bookRepo.createRelationShip(book.getId(), author.getId());
+                }
             }
         }
         return book;
@@ -60,63 +61,76 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> findByTitle(String phrase) {
-        return repository.findByPhrase(phrase);
+        return bookRepo.findByPhrase(phrase);
     }
-
-    /* @Override
-    public Book findByAuthor(String author) {
-        return repository.findByAuthor(author);
-    } */
 
     @Transactional
     @Override
     public Book updateBook(BookDto bookDto) {
         Book book = new Book(bookDto.getId(), bookDto.getTitle(), bookDto.getQuantity(),
                                 bookDto.getYear(), bookDto.getCover());
-        book = repository.save(book);
-        Set<String> alreadySavedAuthors = repository.findAllAuthorsByBookId(book.getId());
+        book = bookRepo.save(book);
+        Set<String> alreadySavedAuthors = bookRepo.findAllAuthorsByBookId(book.getId());
         String[] authors = bookDto.getAuthors().split(";");
         for(String name : authors){
             String fullName = name.trim();
-            if (fullName.isEmpty()){
-                continue;
-            }
 
-            if (alreadySavedAuthors.contains(fullName)){
-                alreadySavedAuthors.remove(fullName);
-            } else{
-                Long author_id = repository.findAuthorByFullName(fullName);
-                if (author_id != null){
-                    repository.createRelationShip(book.getId(), author_id);
+            if (!fullName.isEmpty()){
+                if (alreadySavedAuthors.contains(fullName)){
+                    alreadySavedAuthors.remove(fullName);
                 } else{
-                    repository.insertAuthor(fullName);
-                    author_id = repository.findAuthorByFullName(fullName);
-                    repository.createRelationShip(book.getId(), author_id);
+                    Author author = authorRepo.findByFullName(fullName);
+                    if (author != null){
+                        bookRepo.createRelationShip(book.getId(), author.getId());
+                    } else{
+                        author = authorRepo.save(new Author(fullName));
+                        bookRepo.createRelationShip(book.getId(), author.getId());
+                    }
                 }
             }
         }
+
         for (String authors_to_delete : alreadySavedAuthors) {
-            Long author_id = repository.findAuthorByFullName(authors_to_delete);
-            repository.deleteRelationShip(book.getId(), author_id);
+            Author author = authorRepo.findByFullName(authors_to_delete);
+            bookRepo.deleteRelationShip(book.getId(), author.getId());
+            if (authorRepo.countAuthorRelationShips(author.getId()) == 0){
+                authorRepo.deleteById(author.getId());
+            }
         }
         return book;
     }
 
     @Override
+    public Book updateBook(Book book) {
+        return bookRepo.save(book);
+    }
+
+    @Override
     @Transactional
     public void deleteBook(Long id) {
-        repository.deleteRelationShips(id);
-        repository.deleteById(id);
+        Set<String> alreadySavedAuthors = bookRepo.findAllAuthorsByBookId(id);
+        bookRepo.deleteRelationShips(id);
+        for (String name : alreadySavedAuthors){
+            String fullName = name.trim();
+
+            if (!fullName.isEmpty()){
+                Author author = authorRepo.findByFullName(fullName);
+                if (author != null && authorRepo.countAuthorRelationShips(author.getId()) == 0){
+                    authorRepo.deleteById(author.getId());
+                }
+            }
+        }
+        bookRepo.deleteById(id);
     }
 
     @Override
     public Optional<Book> findById(Long id) {
-        return repository.findById(id);
+        return bookRepo.findById(id);
     }
 
     @Override
     public Page<Book> findPaginated(int page, int page_size) {
         Pageable pageable = PageRequest.of(page - 1, page_size);
-        return repository.findAll(pageable);
+        return bookRepo.findAll(pageable);
     }
 }
