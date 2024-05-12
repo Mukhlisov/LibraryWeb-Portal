@@ -17,6 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <thymeleath-spring.version>3.1.2.RELEASE</thymeleath-spring.version>
         <spring-security.version>6.2.4</spring-security.version>
+        <jjwt.version>0.11.5</jjwt.version>
     </properties>
 
     <dependencies>
@@ -37,11 +38,10 @@
         </dependency>
 
         <!--Spring Security-->
-        <!--<dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-            <version>${spring-boot.version}</version>
-        </dependency>-->
+        </dependency>
 
         <!--Thymeleaf-->
         <dependency>
@@ -69,6 +69,25 @@
             <version>${postgresql.version}</version>
         </dependency>
 
+        <!--JWT-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
         <dependency>
             <groupId>com.github.mukhlisov</groupId>
             <artifactId>service</artifactId>
@@ -80,6 +99,11 @@
             <artifactId>staticResources</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
     </dependencies>
+
 
 </project>

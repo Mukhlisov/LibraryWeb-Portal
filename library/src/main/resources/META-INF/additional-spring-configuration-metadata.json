@@ -1,28 +1,18 @@
 {
   "properties": [
     {
-      "name": "image-provider.address",
-      "type": "java.lang.String",
-      "description": "Provides the ImageProvider address."
-    },
-    {
-      "name": "security.jwt.secret",
-      "type": "java.lang.String",
-      "description": "Secret for jwt token."
-    },
-    {
-      "name": "security.jwt.lifetime",
-      "type": "java.lang.String",
-      "description": "token lifetime in ms."
-    },
-    {
       "name": "security.jwt.refresh",
       "type": "java.lang.String",
-      "description": "refresh."
+      "description": "refresh time."
     },
     {
       "name": "security.jwt.access",
       "type": "java.lang.String",
-      "description": "Description for security.jwt.access."
+      "description": "access time."
+    },
+    {
+      "name": "security.jwt.secret",
+      "type": "java.lang.String",
+      "description": "secret token."
     }
   ] }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+    <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
+
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+    <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+    <script th:src="@{/scripts/regFormValidation.js}"></script>
+
+    <title>Sign in</title>
+</head>
+
+<body>
+    <div class = "sticky-top" th:replace = "~{elements :: navigbar}"></div>
+
+    <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
+        <div class="alert alert-danger" role="alert" th:if="${errors}">
+            <ul th:each="error : ${errors}">
+                <li th:text="${error}"></li>
+            </ul>
+        </div>
+        <form id="regForm" method="post" th:action="@{/auth/sign-up}">
+            <div class="col-sm-4 m-auto">
+                <label for="firstName" class="form-label"><b>Имя</b></label>
+                <input th:value="${regRequest?.firstName}" type="text" name="firstName" id="firstName" class="form-control border-dark mb-3" oninput="validateRussianInput(this)" autocomplete="name" required>
+            
+                <label for="lastName" class="form-label"><b>Фамилия</b></label>
+                <input th:value="${regRequest?.lastName}" type="text" name="lastName" id="lastName" class="form-control border-dark mb-3" oninput="validateRussianInput(this)" autocomplete="family-name" required>
+                
+                <label for="phoneNumber" class="form-label"><b>Номер телефона</b></label>
+                <input th:value="${regRequest?.phoneNumber}" type="tel" name="phoneNumber" id="phoneNumber" class="form-control border-dark" oninput="validatePhoneNumber(this)" autocomplete="tel" required>
+                <small id="phoneLengthError" style="color: red; display: none;" class="mb-3">Неверный формат номра телефона</small>
+                
+                <label for="email" class="form-label"><b>Электронная почта</b></label>
+                <input th:value="${regRequest?.email}" type="email" name="email" id="email" class="form-control border-dark mb-3" autocomplete="email" required>
+                
+                <label for="passwordReg" class="form-label"><b>Пароль</b></label>
+                <input type="password" id="passwordReg" name="password" class="form-control border-dark mb-3" minlength="5" autocomplete="new-password" required>
+    
+                <label for="passwordRegConfirm" class="form-label"><b>Повторите пароль</b></label>
+                <input type="password" id="passwordRegConfirm" name="passwordRep" class="form-control border-dark" minlength="5" autocomplete="new-password" required>
+                <small id="passwordMatchError" style="color: red; display: none;">Пароли не совпадают</small>
+                <small th:if="${passwordMismatch}" style="color: red; display: block">Пароли не совпадают</small>
+    
+                <button class="btn btn-outline-primary mb-3 mt-3" id="submitButton" type="submit">Зарегистрироваться</button>
+            </div>
+        </form>
+        <div class="col-sm-4 m-auto">
+            <span>Уже есть аккаунт? <a class="link-primary" th:href="@{/auth/sign-in}">Войти</a></span>
+        </div>
+    </div>
+
+</body>
+</html>

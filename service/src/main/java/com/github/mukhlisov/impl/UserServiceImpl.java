@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import com.github.mukhlisov.User;
 import com.github.mukhlisov.UserService;
-import com.github.mukhlisov.dto.UserRegDto;
+import com.github.mukhlisov.dto.RegRequestDto;
 import com.github.mukhlisov.repository.UserRepo;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -17,6 +19,7 @@ import lombok.AllArgsConstructor;
 public class UserServiceImpl implements UserService {
 
     private final UserRepo repository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> findAllUsers() {
@@ -24,10 +27,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveUser(UserRegDto userDto) {
-        User user = new User(userDto.getFirstName(), userDto.getLastName(), 
-        userDto.getPhoneNumber(), userDto.getEmail(), 
-        userDto.getPassword());
+    public User saveUser(RegRequestDto userDto) {
+        User user = new User(
+                userDto.getFirstName(),
+                userDto.getLastName(),
+                userDto.getPhoneNumber(),
+                userDto.getEmail(),
+                passwordEncoder.encode(userDto.getPassword()));
         
         return repository.save(user);           
     }

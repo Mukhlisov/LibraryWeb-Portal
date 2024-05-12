@@ -12,15 +12,14 @@
 
   <script th:src="@{/scripts/regFormValidation.js}"></script>
   
-  <title>Title</title>
+  <title>Not Found</title>
 </head>
 <body>
   <div class = "sticky-top" th:replace = "~{elements :: navigbar}"></div>
-  <div th:replace = "~{elements :: modalLogIn}"></div>
-  <div th:replace = "~{elements :: modalReg}"></div>
 
   <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
-    <h1>There is no such content</h1>
+    <h1 th:text="${messageHeader}"></h1>
+    <h4 th:text="${messageBody}"></h4>
   </div>
 </body>
 </html>
