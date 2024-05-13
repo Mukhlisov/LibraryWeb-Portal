@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+    <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
+
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+    <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+
+    <title>Profile</title>
+</head>
+
+<body>
+    <div class = "sticky-top" th:replace = "~{fragments/header :: navigbar (isLoggedIn = ${isLoggedIn})}"></div>
+
+    <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
+
+        <table class="table table-sm table-striped w-50">
+            <caption>ID пользователя: [[${user.id}]]</caption>
+            <tbody>
+                <tr>
+                    <td class="text-center"><b>Имя</b></td>
+                    <td th:text="${user.firstName}"></td>
+                </tr>
+                <tr>
+                    <td class="text-center"><b>Фамилия</b></td>
+                    <td th:text="${user.lastName}"></td>
+                </tr>
+                <tr>
+                    <td class="text-center"><b>Телефон</b></td>
+                    <td th:text="${user.phoneNumber}"></td>
+                </tr>
+                <tr>
+                    <td class="text-center"><b>Почта</b></td>
+                    <td th:text="${user.email}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <form th:action="@{/logout}" method="post">
+            <button class="btn btn-outline-primary" type="submit">Выйти</button>
+        </form>
+    </div>
+
+    <div id="message" th:attr="data-message=${message}" style="display: none;"></div>
+    <div class="toast-overlay" id="toast-overlay"></div>
+    <script th:src="@{/scripts/toasts.js}"></script>
+</body>
+</html>

@@ -8,25 +8,38 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.security.Principal;
 import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class ExceptionsHandler {
 
-    @ExceptionHandler(NoSuchElementException.class)
-    public String handleNoSuchElementException(NoSuchElementException ex, Model model, HttpServletResponse response){
-        model.addAttribute("messageHeader", "Ничего не найдено");
-        model.addAttribute("messageBody", ex.getMessage());
-        response.setStatus(HttpStatus.NOT_FOUND.value());
-        return "errors/no_content";
+    @ExceptionHandler({NoSuchElementException.class, NoResourceFoundException.class})
+    public String handleNoSomethingException(Principal principal, final Exception ex, final Model model, HttpServletResponse response) {
+        boolean isLoggedIn = principal != null;
+        ExceptionEntity entity = new ExceptionEntity(
+                HttpStatus.NOT_FOUND.value(),
+                "Ничего не найдено, возможно вы допустили опечатку в запросе",
+                ex.getMessage()
+        );
+        model.addAttribute("isLoggedIn", isLoggedIn);
+        model.addAttribute("entity", entity);
+        response.setStatus(entity.getCode());
+        return "errors/error";
     }
 
-    @ExceptionHandler(NoResourceFoundException.class)
-    public String handleNoResourceFoundException(NoResourceFoundException ex, Model model, HttpServletResponse response){
-        model.addAttribute("messageHeader", "Ничего не найдено");
-        model.addAttribute("messageBody", ex.getMessage());
-        response.setStatus(HttpStatus.NOT_FOUND.value());
-        return "errors/no_content";
+    @ExceptionHandler(Exception.class)
+    public String handleException(Principal principal, Exception ex, Model model, HttpServletResponse response){
+        boolean isLoggedIn = principal != null;
+        ExceptionEntity entity = new ExceptionEntity(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Неизвестная ошибка",
+                ex.getMessage()
+        );
+        model.addAttribute("isLoggedIn", isLoggedIn);
+        model.addAttribute("entity", entity);
+        response.setStatus(entity.getCode());
+        return "errors/error";
     }
 
 }

@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RegRequestDto {
+public class RegRequest {
 
     @NotEmpty(message = "Поле: Имя не может быть пустым")
     @Pattern(regexp = "^[А-Яа-яЁё]+$", message = "Поле: Имя должно содержать только русские буквы")

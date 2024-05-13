@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <div class = "sticky-top" th:replace = "~{elements :: navigbar}"></div>
+    <div class = "sticky-top" th:replace = "~{fragments/header :: navigbar (isLoggedIn = ${isLoggedIn})}"></div>
 
     <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
         <div class="alert alert-danger" role="alert" th:if="${errors}">
@@ -23,6 +23,7 @@
                 <li th:text="${error}"></li>
             </ul>
         </div>
+        <div class="alert alert-danger" role="alert" th:if="${userAlreadyExists}" th:text="${userAlreadyExists}"></div>
         <form id="regForm" method="post" th:action="@{/auth/sign-up}">
             <div class="col-sm-4 m-auto">
                 <label for="firstName" class="form-label"><b>Имя</b></label>
@@ -32,7 +33,7 @@
                 <input th:value="${regRequest?.lastName}" type="text" name="lastName" id="lastName" class="form-control border-dark mb-3" oninput="validateRussianInput(this)" autocomplete="family-name" required>
                 
                 <label for="phoneNumber" class="form-label"><b>Номер телефона</b></label>
-                <input th:value="${regRequest?.phoneNumber}" type="tel" name="phoneNumber" id="phoneNumber" class="form-control border-dark" oninput="validatePhoneNumber(this)" autocomplete="tel" required>
+                <input th:value="${regRequest?.phoneNumber}" type="tel" name="phoneNumber" id="phoneNumber" class="form-control border-dark" oninput="validatePhoneNumber(this)" autocomplete="tel" maxlength="11" required>
                 <small id="phoneLengthError" style="color: red; display: none;" class="mb-3">Неверный формат номра телефона</small>
                 
                 <label for="email" class="form-label"><b>Электронная почта</b></label>

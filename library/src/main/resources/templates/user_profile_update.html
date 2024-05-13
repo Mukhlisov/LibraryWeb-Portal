@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" th:href="@{/styles/style.css}">
+  <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
+
+  <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+  <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+
+  <title>Profile</title>
+</head>
+
+<body>
+<div class = "sticky-top" th:replace = "~{fragments/header :: navigbar (isLoggedIn = ${isLoggedIn})}"></div>
+
+<div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
+  <form th:action="@{/profile/update}" method="post">
+    <div class="col-sm-4 m-auto">
+      <label for="firstName" class="form-label"><b>Имя</b></label>
+      <input th:value="${user?.firstName}" type="text" name="firstName" id="firstName" class="form-control border-dark mb-3" oninput="validateRussianInput(this)" autocomplete="name" required>
+
+      <label for="lastName" class="form-label"><b>Фамилия</b></label>
+      <input th:value="${user?.lastName}" type="text" name="lastName" id="lastName" class="form-control border-dark mb-3" oninput="validateRussianInput(this)" autocomplete="family-name" required>
+
+      <label for="phoneNumber" class="form-label"><b>Номер телефона</b></label>
+      <input th:value="${user?.phoneNumber}" type="tel" name="phoneNumber" id="phoneNumber" class="form-control border-dark" oninput="validatePhoneNumber(this)" autocomplete="tel" maxlength="11" required>
+      <small id="phoneLengthError" style="color: red; display: none;" class="mb-3">Неверный формат номра телефона</small>
+
+      <label for="email" class="form-label"><b>Электронная почта</b></label>
+      <input th:value="${user?.email}" type="email" name="email" id="email" class="form-control border-dark mb-3" autocomplete="email" required>
+
+      <button class="btn btn-outline-primary" type="submit">Обновить</button>
+    </div>
+
+  </form>
+
+</div>
+
+</body>
+</html>

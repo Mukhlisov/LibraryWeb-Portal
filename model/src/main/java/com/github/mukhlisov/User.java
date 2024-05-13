@@ -37,7 +37,6 @@ public class User {
     @JsonIgnore
     private String password;
 
-
     public User(String firstName, String lastName, String phoneNumber, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;

@@ -16,7 +16,7 @@
 </head>
 
 <body>
-  <div class = "sticky-top" th:replace = "~{elements :: navigbar}"></div>
+  <div class = "sticky-top" th:replace = "~{fragments/header :: navigbar (isLoggedIn = ${isLoggedIn})}"></div>
 
   <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
     
@@ -49,8 +49,5 @@
     </div>
   </div>
 
-  <div id="message" th:attr="data-message=${message}" style="display: none;"></div>
-  <div class="toast-overlay" id="toast-overlay"></div>
-  <script th:src="@{/scripts/toasts.js}"></script>
 </body>
 </html>

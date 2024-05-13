@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div class = "sticky-top" th:replace = "~{elements :: navigbar}"></div>
+    <div class = "sticky-top" th:replace = "~{fragments/header :: navigbar (isLoggedIn = ${isLoggedIn})}"></div>
 
     <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
         <div class="alert alert-danger" role="alert" th:if="${param.error}">
