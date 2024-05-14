@@ -13,7 +13,7 @@
     <title>Manage menu</title>
 </head>
 <body>
-    <div th:replace="~{elements :: contentList}"></div>
+    <div th:replace="~{fragments/offcanvas :: contentList}"></div>
 
     <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
 
@@ -39,20 +39,18 @@
                 <tr th:each="author : ${listAuthor}">
                     <th th:text="${author.id}"></th>
                     <th th:text="${author.fullName}"></th>
-                    <th><a th:href="@{'/lib-authors/update?id=' + ${author.id}}" class="btn btn-outline-primary">Обновить</a></th>
+                    <th><a th:href="@{/lib-authors/update/{id}(id=${author.id})}" class="btn btn-outline-primary">Обновить</a></th>
                 </tr>
             </tbody>
         </table>
 
         <div th:if="${pageable}">
-            <div th:replace="~{elements :: pagination_m}"></div>
+            <div th:replace="~{fragments/pagination :: pagination_m}"></div>
         </div>
 
         <a th:href="@{/lib-authors/add}" class="btn btn-outline-primary">Добавить нового автора</a>
     </div>
-    <div id="message" th:attr="data-message=${message}" style="display: none;"></div>
-    <div class="toast-overlay" id="toast-overlay"></div>
-    <script th:src="@{/scripts/toasts.js}"></script>
+    <div th:replace="~{fragments/toast :: toast}"></div>
     
 </body>
 </html>

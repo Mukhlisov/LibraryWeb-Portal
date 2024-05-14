@@ -28,7 +28,7 @@ public class AuthorEditController {
     private final AuthorService authorService;
 
     @GetMapping
-    public String viewAllAuthors(@RequestParam(name = "phrase", required = true, defaultValue = "")String phrase, Model model){
+    public String viewAllAuthors(){
         return "redirect:/lib-authors/page/1";
     }
 
@@ -68,18 +68,17 @@ public class AuthorEditController {
         return "redirect:/lib-authors/page/1";
     }
 
-    @GetMapping("/update")
-    public String updateAuthorForm(@RequestParam(name = "id", defaultValue = "-1") Long id, Model model) throws NoSuchElementException{
-        Optional<Author> author = authorService.findById(id);
-        model.addAttribute("author", author.get());
+    @GetMapping("/update/{id:\\d+}")
+    public String updateAuthorForm(@PathVariable(name = "id") Long id, Model model) throws NoSuchElementException{
+        Author author = authorService.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Книга c идентификатором %d не найдена".formatted(id)));
+        model.addAttribute("author", author);
         return "add&update/update_author";
     }
 
     @PostMapping("/update")
     public String updateAuthor(@ModelAttribute AuthorDto authorDto, RedirectAttributes redirect){
-        Author author = authorService.findById(authorDto.getId()).get();
-        author.setFullName(authorDto.getFullName());
-        authorService.updateAuthor(author);
+        authorService.updateAuthor(authorDto);
 
         redirect.addFlashAttribute("message", "Автор был успешно обновлен!");
         return "redirect:/lib-authors/page/1";

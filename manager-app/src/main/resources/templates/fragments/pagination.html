@@ -1,0 +1,56 @@
+<div th:fragment="pagination_m">
+    <div class="hstack gap-2 mb-3" th:if="${totalPages} > 1">
+        <div class="pagination">
+            <li class="page-item">
+                <a th:if="${currPage != 1}" class="page-link" th:href="${1}">&laquo;</a>
+                <span th:unless="${currPage != 1}" class="page-link">&laquo;</span>
+            </li>
+            <li class="page-item">
+                <a th:if="${currPage != 1}" class="page-link" th:href="${currPage - 1}">Предыдущая</a>
+                <span th:unless="${currPage != 1}" class="page-link">Предыдущая</span>
+            </li>
+        </div>
+
+        <div th:if="${totalPages > pagesAmount}" class="pagination hstack gap-2">
+            <div th:if="${pagesAmount > currPage}" th:each="i: ${#numbers.sequence(1, pagesAmount)}">
+                <li class="page-item">
+                    <a th:if="${currPage != i}" class="page-link" th:href="${i}">[[${i}]]</a>
+                    <span th:unless="${currPage != i}" class="page-link">[[${i}]]</span>
+                </li>
+            </div>
+            <div th:unless="${pagesAmount > currPage}" class="pagination hstack gap-2">
+                <div th:if="${currPage != totalPages}" th:each="i: ${#numbers.sequence(currPage - pagesAmount + 2, currPage + 1)}">
+                    <li class="page-item">
+                        <a th:if="${currPage != i}" class="page-link" th:href="${i}">[[${i}]]</a>
+                        <span th:unless="${currPage != i}" class="page-link">[[${i}]]</span>
+                    </li>
+                </div>
+                <div th:unless="${currPage != totalPages}" th:each="i: ${#numbers.sequence(currPage - pagesAmount + 1, currPage)}">
+                    <li class="page-item">
+                        <a th:if="${currPage != i}" class="page-link" th:href="${i}">[[${i}]]</a>
+                        <span th:unless="${currPage != i}" class="page-link">[[${i}]]</span>
+                    </li>
+                </div>
+            </div>
+        </div>
+        <div th:unless="${totalPages > pagesAmount}" class="pagination hstack gap-2">
+            <div th:if="${pagesAmount > currPage}" th:each="i: ${#numbers.sequence(1, totalPages)}">
+                <li class="page-item">
+                    <a th:if="${currPage != i}" class="page-link" th:href="${i}">[[${i}]]</a>
+                    <span th:unless="${currPage != i}" class="page-link">[[${i}]]</span>
+                </li>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <li class="page-item">
+                <a th:if="${currPage != totalPages}" class="page-link" th:href="${currPage + 1}">Следующая</a>
+                <span th:unless="${currPage != totalPages}" class="page-link">Следующая</span>
+            </li>
+            <li class="page-item">
+                <a th:if="${currPage != totalPages}" class="page-link" th:href="${totalPages}">&raquo;</a>
+                <span th:unless="${currPage != totalPages}" class="page-link">&raquo;</span>
+            </li>
+        </div>
+    </div>
+</div>

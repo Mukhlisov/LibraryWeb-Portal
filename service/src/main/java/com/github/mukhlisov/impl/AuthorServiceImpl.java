@@ -23,24 +23,17 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepo repository;
 
     @Override
-    public List<Author> findAllAuthors() {
-        return repository.findAll();
-    }
-
-    @Override
-    public Author findByFullName(String fullName) {
-        return repository.findByFullName(fullName);
-    }
-
-    @Override
     public Optional<Author> findById(Long id) {
         return repository.findById(id);
     }
 
     @Override
-    public void updateAuthor(Author author) {
-       repository.save(author);
+    public void updateAuthor(AuthorDto authorDto) {
+        Author author = repository.findById(authorDto.getId()).get();
+        author.setFullName(authorDto.getFullName());
+        repository.save(author);
     }
+
     
     @Transactional
     @Override
@@ -53,12 +46,6 @@ public class AuthorServiceImpl implements AuthorService {
     public Author saveAuthor(AuthorDto authorDto) {
         Author author = new Author(authorDto.getFullName());
         return repository.save(author);
-    }
-
-    @Transactional
-    @Override
-    public void deleteRelationShip(Author author, Book book) {
-        repository.deleteRelationShip(author.getId(), book.getId());
     }
 
     @Override

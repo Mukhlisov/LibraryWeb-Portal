@@ -1,4 +1,4 @@
-package com.github.mukhlisov;
+package com.github.mukhlisov.fileSystemImageStorage;
 
 import org.springframework.web.multipart.MultipartFile;
 

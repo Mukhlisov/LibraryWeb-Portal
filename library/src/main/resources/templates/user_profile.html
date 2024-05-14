@@ -9,7 +9,6 @@
     <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
 
     <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
-    <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
 
     <title>Profile</title>
 </head>
@@ -18,10 +17,24 @@
     <div class = "sticky-top" th:replace = "~{fragments/header :: navigbar (isLoggedIn = ${isLoggedIn})}"></div>
 
     <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
+        <div class="d-inline-flex mb-5 gap-5">
+            <div class="align-content-end">
+                <h2>Просмотр профиля</h2>
+            </div>
+            <div class="align-content-end">
+                <h4 class="text-primary">Мои книги</h4>
+            </div>
+            <div class="align-content-end">
+                <h4 class="text-primary">Корзина</h4>
+            </div>
+        </div>
 
-        <table class="table table-sm table-striped w-50">
-            <caption>ID пользователя: [[${user.id}]]</caption>
-            <tbody>
+        <div>
+            <table class="table table-sm table-striped w-50 border-1 border-dark">
+                <caption>ID пользователя: [[${user.id}]]<br>
+                    <a th:href="@{/profile/update}">Редактировать профиль &raquo;</a>
+                </caption>
+                <tbody>
                 <tr>
                     <td class="text-center"><b>Имя</b></td>
                     <td th:text="${user.firstName}"></td>
@@ -38,16 +51,16 @@
                     <td class="text-center"><b>Почта</b></td>
                     <td th:text="${user.email}"></td>
                 </tr>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
+
 
         <form th:action="@{/logout}" method="post">
-            <button class="btn btn-outline-primary" type="submit">Выйти</button>
+            <button class="btn btn-outline-danger" type="submit">Выйти</button>
         </form>
     </div>
 
-    <div id="message" th:attr="data-message=${message}" style="display: none;"></div>
-    <div class="toast-overlay" id="toast-overlay"></div>
-    <script th:src="@{/scripts/toasts.js}"></script>
+    <div th:replace="~{fragments/toast :: toast}"></div>>
 </body>
 </html>

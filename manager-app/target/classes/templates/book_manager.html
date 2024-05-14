@@ -13,7 +13,7 @@
     <title>Manage menu</title>
 </head>
 <body>
-    <div th:replace="~{elements :: contentList}"></div>
+    <div th:replace="~{fragments/offcanvas :: contentList}"></div>
 
     <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
 
@@ -48,20 +48,18 @@
                         </ul>
                     </th>
                     <th th:text="${book.quantity}"></th>
-                    <th><a th:href="@{'/lib-books/update?id=' + ${book.id}}" class="btn btn-outline-primary">Обновить</a></th>
+                    <th><a th:href="@{/lib-books/update/{id}(id=${book.id})}" class="btn btn-outline-primary">Обновить</a></th>
                 </tr>
             </tbody>
         </table>
 
         <div th:if="${pageable}">
-            <div th:replace="~{elements :: pagination_m}"></div>
+            <div th:replace="~{fragments/pagination :: pagination_m}"></div>
         </div>
 
         <a th:href="@{/lib-books/add}" class="btn btn-outline-primary">Добавить новую книгу</a>
     </div>
-    <div id="message" th:attr="data-message=${message}" style="display: none;"></div>
-    <div class="toast-overlay" id="toast-overlay"></div>
-    <script th:src="@{/scripts/toasts.js}"></script>
+    <div th:replace="~{fragments/toast :: toast}"></div>
 </body>
 
 </html>

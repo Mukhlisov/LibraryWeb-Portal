@@ -1,0 +1,14 @@
+<div th:fragment="contentList" class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="ManageMenu">
+    <div class="offcanvas-header border-3 border-bottom">
+        <h5 class="offcanvas-title">Выбор содержимого</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Закрыть"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div>
+            <a class="nav-item d-inline fs-3 link-dark" th:href="@{/lib-books}">Книги</a>
+        </div>
+        <div class="mt-3">
+            <a class="nav-item d-inline fs-3 link-dark" th:href="@{/lib-authors}">Авторы</a>
+        </div>
+    </div>
+</div>

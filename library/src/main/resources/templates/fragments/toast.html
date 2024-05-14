@@ -1,0 +1,5 @@
+<div th:fragment="toast">
+    <div id="message" th:attr="data-message=${message}" style="display: none;"></div>
+    <div class="toast-overlay" id="toast-overlay"></div>
+    <script th:src="@{/scripts/toasts.js}"></script>
+</div>

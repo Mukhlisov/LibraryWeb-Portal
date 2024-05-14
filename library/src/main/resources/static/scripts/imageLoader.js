@@ -1,9 +1,13 @@
 const source = 'http://localhost:8081/covers/';
 
 window.onload = function() {
-    var images = document.getElementsByClassName('dynamic-image');
+    let images = document.getElementsByClassName('dynamic-image');
     for (var i = 0; i < images.length; i++) {
-        var bookCover = images[i].getAttribute('data-cover');
-        images[i].src = source + bookCover;
+        let bookCover = images[i].getAttribute('data-cover');
+        if (bookCover === null || bookCover === ''){
+            images[i].src = source;
+        } else{
+            images[i].src = source + bookCover;
+        }
     }
 };

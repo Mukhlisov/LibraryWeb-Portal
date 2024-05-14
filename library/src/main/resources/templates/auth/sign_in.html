@@ -8,7 +8,6 @@
     <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
 
     <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
-    <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
 
     <title>Sign in</title>
 </head>
@@ -34,8 +33,6 @@
         </div>
     </div>
 
-    <div id="message" th:attr="data-message=${message}" style="display: none;"></div>
-    <div class="toast-overlay" id="toast-overlay"></div>
-    <script th:src="@{/scripts/toasts.js}"></script>
+    <div th:replace="~{fragments/toast :: toast}"></div>
 </body>
 </html>

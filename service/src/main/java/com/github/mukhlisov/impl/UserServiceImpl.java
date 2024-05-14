@@ -1,13 +1,13 @@
 package com.github.mukhlisov.impl;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 import com.github.mukhlisov.User;
 import com.github.mukhlisov.UserService;
 import com.github.mukhlisov.dto.RegRequest;
-import com.github.mukhlisov.dto.UserProfileInfo;
+import com.github.mukhlisov.dto.UserInfoDto;
+import com.github.mukhlisov.dto.UserUpdateDto;
 import com.github.mukhlisov.exceptions.UserAlreadyExistsException;
 import com.github.mukhlisov.repository.UserRepo;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,39 +23,38 @@ public class UserServiceImpl implements UserService {
     private final UserRepo repository;
     private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public List<User> findAllUsers() {
-        return repository.findAll();
-    }
 
     @Override
-    public User saveUser(RegRequest userDto) throws UserAlreadyExistsException {
+    public User saveUser(RegRequest userRegDto) throws UserAlreadyExistsException {
 
-        if (repository.existsByPhoneNumber(userDto.getPhoneNumber())) {
+        if (repository.existsByPhoneNumber(userRegDto.getPhoneNumber())) {
             throw new UserAlreadyExistsException("Пользователь с номером телефона: %s уже существует"
-                    .formatted(userDto.getPhoneNumber()));
+                    .formatted(userRegDto.getPhoneNumber()));
         }
 
         User user = new User(
-                userDto.getFirstName(),
-                userDto.getLastName(),
-                userDto.getPhoneNumber(),
-                userDto.getEmail(),
-                passwordEncoder.encode(userDto.getPassword()));
+                userRegDto.getFirstName(),
+                userRegDto.getLastName(),
+                userRegDto.getPhoneNumber(),
+                userRegDto.getEmail(),
+                passwordEncoder.encode(userRegDto.getPassword()));
 
         return repository.save(user);
     }
 
     @Transactional
     @Override
-    public void updateUser(User user) {
+    public void updateUser(UserUpdateDto userUpdateDto) throws UserAlreadyExistsException {
+        User user = repository.findById(userUpdateDto.getId()).get();
+        if (!userUpdateDto.getPhoneNumber().equals(user.getPhoneNumber()) && repository.existsByPhoneNumber(userUpdateDto.getPhoneNumber())) {
+            throw new UserAlreadyExistsException("Пользователь с номером телефона: %s уже существует"
+                    .formatted(userUpdateDto.getPhoneNumber()));
+        }
+        user.setFirstName(userUpdateDto.getFirstName());
+        user.setLastName(userUpdateDto.getLastName());
+        user.setEmail(userUpdateDto.getEmail());
+        user.setPhoneNumber(userUpdateDto.getPhoneNumber());
         repository.save(user);
-    }
-
-    @Transactional
-    @Override
-    public void deleteById(Long id) {
-        repository.deleteById(id);
     }
 
     @Override
@@ -64,27 +63,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserProfileInfo findById(Long id) {
+    public UserInfoDto findById(Long id) {
         User user = repository.findById(id)
                 .orElseThrow(()-> new RuntimeException("User not found"));
-        return new UserProfileInfo(
+        return new UserInfoDto(
                 user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getPhoneNumber(),
                 user.getEmail()
         );
-    }
-
-    @Transactional
-    @Override
-    public void deleteByPhoneNumber(String phone){
-        repository.deleteByPhoneNumber(phone);
-    }
-
-    @Override
-    public boolean existsByPhoneNumber(String phone) {
-        return repository.existsByPhoneNumber(phone);
     }
 
 }

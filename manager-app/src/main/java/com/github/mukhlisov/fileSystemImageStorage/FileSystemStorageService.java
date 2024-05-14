@@ -1,4 +1,4 @@
-package com.github.mukhlisov;
+package com.github.mukhlisov.fileSystemImageStorage;
 
 import java.io.IOException;
 import java.io.InputStream;

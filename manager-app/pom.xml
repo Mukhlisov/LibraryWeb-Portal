@@ -75,12 +75,6 @@
         </dependency>
         <dependency>
             <groupId>com.github.mukhlisov</groupId>
-            <artifactId>fileSystemStorage</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.mukhlisov</groupId>
             <artifactId>staticResources</artifactId>
             <version>1.0.0</version>
         </dependency>

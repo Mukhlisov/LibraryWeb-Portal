@@ -8,9 +8,8 @@
     <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
 
     <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
-    <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
 
-    <script th:src="@{/scripts/fileInputValidation.js}"></script>
+    <script th:src="@{/scripts/add_UpdateBookValidation.js}"></script>
     <script th:src="@{/scripts/imageLoader.js}"></script>
 
     <title>Update</title>
@@ -24,21 +23,23 @@
                     <input type="hidden" th:value = "${book.id}" name="id">
                     <input type="hidden" th:value = "${book.cover}" name="cover">
                     <div class="mb-3" style="width: 70%;">
-                        <label class="form-label"><b>Название книги</b></label>
-                        <input type="text" th:value="${book.title}" name = "title" class="form-control border-dark" required>
+                        <label for="book_title" class="form-label"><b>Название книги</b></label>
+                        <input type="text" th:value="${book.title}" id="book_title" name = "title" class="form-control border-dark" required>
                     </div>
                     <div class="mb-3" style="width: 70%;">
-                        <label class="form-label"><b>Автор</b></label>
-                        <input type="text" th:value="${book.getAllAuthors()}" name = "authors" class="form-control border-dark" aria-describedby="authorsHelp" placeholder="Фамилия Имя Отчество">
+                        <label for="authors" class="form-label"><b>Автор</b></label>
+                        <input type="text" th:value="${book.getAllAuthors()}" id="authors" name = "authors" class="form-control border-dark" aria-describedby="authorsHelp">
                         <div class="form-text">Введите полное имя автора, если авторов несколько, то разделите их через ';'</div>
                     </div>
                     <div class="mb-3" style="width: 15%">
-                        <label class="form-label"><b>Год</b></label>
-                        <input type="number" th:value="${book.year}" name = "year" class="form-control border-dark">
+                        <label for="year" class="form-label"><b>Год</b></label>
+                        <input type="number" th:value="${book.year}" id="year" name = "year" class="form-control border-dark" min="1600">
+                        <small style="color: red; display: none;" id="yearValueError">Валидные значения года от 1600 до текущего</small>
                     </div>
                     <div class="mb-3" style="width: 15%">
-                        <label class="form-label"><b>Количество</b></label>
-                        <input type="number" th:value="${book.quantity}" name = "quantity" class="form-control border-dark">
+                        <label for="quantity" class="form-label"><b>Количество</b></label>
+                        <input type="number" th:value="${book.quantity}" id="quantity" name = "quantity" class="form-control border-dark" min="0">
+                        <small style="color: red; display: none;" id="quantityValueError">Минимальное колличество 0</small>
                     </div>
                     <div class="mb-3" style="width: 70%;">
                         <label class="form-label"><b>Обложка</b></label>
@@ -59,12 +60,10 @@
         <form method="post" th:action="@{/lib-books/delete}" class="mt-2">
             <input type="hidden" th:value = "${book.id}" name="id">
             <input type="hidden" th:value = "${book.cover}" name="cover">
-            <input type="submit" class="btn btn-danger" value="Удалить книгу"></input>
+            <input type="submit" class="btn btn-danger" value="Удалить книгу">
         </form>
     </div>
-    <div id="message" th:attr="data-message=${message}" style="display: none;"></div>
-    <div class="toast-overlay" id="toast-overlay"></div>
-    <script th:src="@{/scripts/toasts.js}"></script>
+    <div th:replace="~{fragments/toast :: toast}"></div>
     
 </body>
 </html>

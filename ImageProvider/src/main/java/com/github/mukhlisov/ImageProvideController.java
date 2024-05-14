@@ -2,6 +2,8 @@ package com.github.mukhlisov;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,13 +32,24 @@ public class ImageProvideController {
     @Value("${filesource-dir}")
     private String source;
 
+    @Value("${void-file}")
+    private String noCover;
+
     @SneakyThrows
     @GetMapping("/covers/{filename:.+}")
-    public ResponseEntity<byte[]> serveFile(@PathVariable String filename) throws FileNotFoundException {
+    public ResponseEntity<byte[]> serveImage(@PathVariable(required = false) String filename) throws FileNotFoundException {
         UrlResource resource = new UrlResource(Paths.get(source, filename).toUri());
-        /*HttpHeaders headers = new HttpHeaders();
-        headers.setCacheControl(CacheControl.maxAge(5, TimeUnit.MINUTES).cachePublic().getHeaderValue());*/
+        return createResponseEntity(resource);
+    }
 
+    @SneakyThrows
+    @GetMapping("/covers/")
+    public ResponseEntity<byte[]> serveVoidImage(){
+        Resource resource = new ClassPathResource("static/" + noCover);
+        return createResponseEntity(resource);
+    }
+
+    private ResponseEntity<byte[]> createResponseEntity(Resource resource) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
         int bytesRead;
@@ -53,6 +66,6 @@ public class ImageProvideController {
 
     @ExceptionHandler(FileNotFoundException.class)
     public ResponseEntity<?> handleFileNotFound(FileNotFoundException exc) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("<h1>Файл не найден</h1><h3>"+exc.getLocalizedMessage()+"</h3>");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("<h1>Файл не найден</h1><h3>"+exc.getMessage()+"</h3>");
     }
 }

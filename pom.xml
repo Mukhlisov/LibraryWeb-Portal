@@ -14,7 +14,6 @@
     <modules>
         <module>manager-app</module>
         <module>library</module>
-        <module>fileSystemStorage</module>
         <module>model</module>
         <module>service</module>
         <module>ImageProvider</module>

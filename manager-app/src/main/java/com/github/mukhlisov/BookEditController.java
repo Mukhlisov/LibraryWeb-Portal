@@ -1,7 +1,6 @@
 package com.github.mukhlisov;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -15,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.github.mukhlisov.dto.BookDto;
+import com.github.mukhlisov.fileSystemImageStorage.StorageService;
 
 import lombok.AllArgsConstructor;
 
@@ -29,13 +29,11 @@ public class BookEditController {
     private static final int PAGE_SIZE = 6;
     private static final int PAGES_IN_ROW = 4;
 
-    private static final String noCover = "noCover.jpg";
-
     private final BookService bookService;
     private final StorageService storageService;
 
-    private static boolean isValidFile(String filename){
-        return filename.substring(filename.lastIndexOf('.') + 1).matches("jpg|jpeg|png");
+    private static boolean isInValidFile(String filename){
+        return !filename.substring(filename.lastIndexOf('.') + 1).matches("jpg|jpeg|png");
     }
 
     private static String getUniqueFileName(Long id, String filename){
@@ -77,47 +75,51 @@ public class BookEditController {
 
     @PostMapping("/add")
     public String addNewBook(@ModelAttribute BookDto bookDto,
-                                @RequestParam(name = "file") MultipartFile file,
-                                RedirectAttributes redirect) {
-        
-        
-        bookDto.setCover(noCover);
+                            @RequestParam(name = "file") MultipartFile file,
+                            RedirectAttributes redirect) {
+
         Book book = bookService.saveBook(bookDto);
-        if (!file.getOriginalFilename().isEmpty()){
-            if (isValidFile(file.getOriginalFilename())){
-                String uniqueFilename = getUniqueFileName(book.getId(), file.getOriginalFilename());
-                storageService.upload(file, uniqueFilename);
-                book.setCover(uniqueFilename);
-            } else{
+        String fileName = file.getOriginalFilename();
+
+        if (!fileName.isEmpty()){
+            if (isInValidFile(file.getOriginalFilename())){
                 redirect.addFlashAttribute("message", "Ошибка: неверный тип файла!");
                 return "redirect:/lib-books/add";
             }
+            String uniqueFilename = getUniqueFileName(book.getId(), fileName);
+            storageService.upload(file, uniqueFilename);
+            book.setCover(uniqueFilename);
+        } else{
+            book.setCover("");
         }
         bookService.updateBook(book);
         redirect.addFlashAttribute("message", "Книга успешно добавлена!");
         return "redirect:/lib-books/page/1";
     }
 
-    @GetMapping("/update")
-    public String updateBookForm(@RequestParam(name="id", defaultValue = "-1") Long id, Model model) throws NoSuchElementException{
-        Optional<Book> book = bookService.findById(id);
-        model.addAttribute("book", book.get());
+    @GetMapping("/update/{id:\\d+}")
+    public String updateBookForm(@PathVariable(name = "id") Long id, Model model) throws NoSuchElementException{
+        Book book = bookService.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Книга c идентификатором %d не найдена".formatted(id)));
+        model.addAttribute("book", book);
         return "add&update/update_book";
     }
 
     @PostMapping("/update")
     public String updateBook(@ModelAttribute BookDto bookDto,
-                        @RequestParam("cover") String currCover,
-                        @RequestParam(name = "file") MultipartFile file,
-                        RedirectAttributes redirect){
+                            @RequestParam(name = "file") MultipartFile file,
+                            RedirectAttributes redirect){
 
-        if (!file.getOriginalFilename().isEmpty()){
-            if (isValidFile(file.getOriginalFilename())){
-                storageService.upload(file, getUniqueFileName(bookDto.getId(), file.getOriginalFilename()));
-            } else{
+        String fileName = file.getOriginalFilename();
+
+        if (!fileName.isEmpty()){
+            if (isInValidFile(file.getOriginalFilename())){
                 redirect.addFlashAttribute("message", "Ошибка: неверный тип файла!");
-                return "redirect:/lib-books/update?id=%d".formatted(bookDto.getId());
+                return "redirect:/lib-books/update/%d".formatted(bookDto.getId());
             }
+            String uniqueFilename = getUniqueFileName(bookDto.getId(), fileName);
+            storageService.upload(file, uniqueFilename);
+            bookDto.setCover(uniqueFilename);
         }
         bookService.updateBook(bookDto);
         redirect.addFlashAttribute("message", "Книга успешно обновлена!");
@@ -129,13 +131,13 @@ public class BookEditController {
                                 @RequestParam(name = "cover") String cover,
                                 RedirectAttributes redirect){
 
-        if (!cover.equals(noCover)){
+        if (!cover.isEmpty()){
             storageService.deleteByName(cover);
         }
         bookService.deleteBook(id);
         redirect.addFlashAttribute("message", "Книга была успешно удалена!");
 
-        return "redirect:/lib-books";
+        return "redirect:/lib-books/page/1";
     }
 
 }

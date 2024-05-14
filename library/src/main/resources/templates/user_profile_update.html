@@ -9,36 +9,44 @@
   <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
 
   <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
-  <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
 
   <title>Profile</title>
 </head>
 
 <body>
-<div class = "sticky-top" th:replace = "~{fragments/header :: navigbar (isLoggedIn = ${isLoggedIn})}"></div>
+  <div class = "sticky-top" th:replace = "~{fragments/header :: navigbar (isLoggedIn = ${isLoggedIn})}"></div>
 
-<div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
-  <form th:action="@{/profile/update}" method="post">
-    <div class="col-sm-4 m-auto">
-      <label for="firstName" class="form-label"><b>Имя</b></label>
-      <input th:value="${user?.firstName}" type="text" name="firstName" id="firstName" class="form-control border-dark mb-3" oninput="validateRussianInput(this)" autocomplete="name" required>
+    <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
+      <a th:href="@{/profile}">&laquo; Просмотр профиля </a>
+      <div class="alert alert-danger" role="alert" th:if="${errors}">
+        <ul th:each="error : ${errors}">
+          <li th:text="${error}"></li>
+        </ul>
+      </div>
+      <div class="alert alert-danger" role="alert" th:if="${userAlreadyExists}" th:text="${userAlreadyExists}"></div>
+      <div>
+        <form th:action="@{/profile/update}" method="post">
+          <div class="col-sm-4 m-auto">
+            <input th:value="${user?.id}" name="id" type="hidden">
+            <label for="firstName" class="form-label"><b>Имя</b></label>
+            <input th:value="${user?.firstName}" type="text" name="firstName" id="firstName" class="form-control border-dark mb-3" autocomplete="name" required>
 
-      <label for="lastName" class="form-label"><b>Фамилия</b></label>
-      <input th:value="${user?.lastName}" type="text" name="lastName" id="lastName" class="form-control border-dark mb-3" oninput="validateRussianInput(this)" autocomplete="family-name" required>
+            <label for="lastName" class="form-label"><b>Фамилия</b></label>
+            <input th:value="${user?.lastName}" type="text" name="lastName" id="lastName" class="form-control border-dark mb-3" autocomplete="family-name" required>
 
-      <label for="phoneNumber" class="form-label"><b>Номер телефона</b></label>
-      <input th:value="${user?.phoneNumber}" type="tel" name="phoneNumber" id="phoneNumber" class="form-control border-dark" oninput="validatePhoneNumber(this)" autocomplete="tel" maxlength="11" required>
-      <small id="phoneLengthError" style="color: red; display: none;" class="mb-3">Неверный формат номра телефона</small>
+            <label for="phoneNumber" class="form-label"><b>Номер телефона</b></label>
+            <input th:value="${user?.phoneNumber}" type="tel" name="phoneNumber" id="phoneNumber" class="form-control border-dark mb-3" autocomplete="tel" maxlength="11" required>
 
-      <label for="email" class="form-label"><b>Электронная почта</b></label>
-      <input th:value="${user?.email}" type="email" name="email" id="email" class="form-control border-dark mb-3" autocomplete="email" required>
+            <label for="email" class="form-label"><b>Электронная почта</b></label>
+            <input th:value="${user?.email}" type="email" name="email" id="email" class="form-control border-dark mb-3" autocomplete="email" required>
 
-      <button class="btn btn-outline-primary" type="submit">Обновить</button>
+            <button class="btn btn-outline-primary" type="submit">Обновить</button>
+          </div>
+        </form>
+      </div>
+
     </div>
 
-  </form>
-
-</div>
-
 </body>
+
 </html>

@@ -9,7 +9,6 @@
     <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
 
     <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
-    <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
     
     <title>[[${book.title}]]</title>
 </head>
@@ -18,6 +17,11 @@
     <div class = "sticky-top" th:replace = "~{fragments/header :: navigbar (isLoggedIn = ${isLoggedIn})}"></div>
 
     <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
+        <div class="container d-inline-flex">
+            <div>
+
+            </div>
+        </div>
         <p th:text = "${book.title}"></p>
         <p th:text = "${book.year}"></p>
         <p th:text = "${book.quantity}"></p>

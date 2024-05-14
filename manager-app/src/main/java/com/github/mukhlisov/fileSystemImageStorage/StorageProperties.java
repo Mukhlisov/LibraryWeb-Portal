@@ -1,9 +1,8 @@
-package com.github.mukhlisov;
+package com.github.mukhlisov.fileSystemImageStorage;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 @Setter
 @Getter
