@@ -14,11 +14,11 @@
 <body>
     <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
     
-        <form method="post" th:action = "@{/lib-authors/update}">
+        <form method="post" th:action="@{/lib-authors/update}">
             <input type="hidden" th:value = "${author.id}" name="id">
             <div class="mb-3" style="width: 50%;">
-                <label class="form-label"><b>ФИО автора</b></label>
-                <input type="text" th:value="${author.fullName}" name = "fullName" class="form-control border-dark" required>
+                <label for="fullName" class="form-label"><b>ФИО автора</b></label>
+                <input type="text" id="fullName" th:value="${author.fullName}" name="fullName" class="form-control border-dark" required>
             </div>
             <div class="col-12">
                 <button class="btn btn-outline-primary" type="submit">Обновить данные</button>
@@ -27,9 +27,8 @@
         </form>
         <form method="post" th:action="@{/lib-authors/delete}" class="mt-2">
             <input type="hidden" th:value = "${author.id}" name="id">
-            <input type="submit" class="btn btn-danger" value="Удалить автора"></input>
+            <input type="submit" class="btn btn-danger" value="Удалить автора">
         </form>
-        <form action="get" class="mt-2"></form>
     </div>
     
 </body>

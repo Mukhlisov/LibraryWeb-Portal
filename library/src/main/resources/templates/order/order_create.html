@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+    <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
+
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+    <script th:src="@{/scripts/order_createValidation.js}"></script>
+
+    <title>Order</title>
+</head>
+
+<body>
+    <div class = "sticky-top" th:replace = "~{fragments/header :: navigbar (isLoggedIn = ${isLoggedIn})}"></div>
+
+    <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
+        <a th:href="@{/book/{id}(id=${book.book_id})}">&laquo; Вернуться назад</a>
+        <form id="orderCreateForm" method="post" th:action="@{/order/create}">
+            <div class="container d-inline-grid bg-light gap-3 mt-3">
+                <div class="mb-1"><b>Название: </b>[[${book.title}]]</div>
+                <input type="hidden" name="book_id" th:value="${book.book_id}">
+                <label for="rent_start_date" class="form-label"><b>Дата выдачи заказа:</b></label>
+                <div>
+                    <input style="max-width: 20%;" type="date" id="rent_start_date" name="rent_start_date" class="form-control border-dark">
+                    <small>Выберите дату до <small id="lastDay"></small></small>
+                    <small style="color: red; display: none" id="dateError">Введите корректную дату</small>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-outline-success mt-3">Оформить заказ</button>
+        </form>
+
+    </div>
+
+    <script>
+        const smallElement = document.querySelector("small");
+        let currentDateElement = document.createElement("small");
+        currentDateElement.id = "lastDay";
+        function updateCurrentDate() {
+            let currentDate = new Date();
+            currentDate.setDate(currentDate.getDate() + 7);
+            currentDateElement.textContent = currentDate.toLocaleDateString();
+        }
+        smallElement.insertAdjacentElement("afterend", currentDateElement);
+        updateCurrentDate();
+    </script>
+
+</body>
+</html>

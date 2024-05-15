@@ -14,14 +14,14 @@
 <body>
     <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
 
-        <form method="post" th:action = "@{/lib-authors/add}">
+        <form method="post" th:action="@{/lib-authors/add}">
             <div class="mb-3" style="width: 50%;">
-                <label class="form-label"><b>ФИО Автора</b></label>
-                <input type="text" name = "fullName" class="form-control border-dark" required>
+                <label for="fullName" class="form-label"><b>ФИО Автора</b></label>
+                <input type="text" id="fullName" name="fullName" class="form-control border-dark" required>
             </div>
             <div class="col-12">
                 <button class="btn btn-outline-primary" type="submit">Добавить</button>
-                <form action="get"><a th:href="@{/lib-authors}" class="btn btn-outline-primary">Назад</a></form>
+                <a th:href="@{/lib-authors}" class="btn btn-outline-primary">Назад</a>
             </div>
         </form>
 

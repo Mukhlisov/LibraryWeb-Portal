@@ -1,6 +1,8 @@
 package com.github.mukhlisov;
 
 
+import com.github.mukhlisov.securityModule.LogInInfo;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
 import java.security.Principal;
@@ -8,42 +10,36 @@ import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
-@RequestMapping()
+@RequestMapping
 @AllArgsConstructor
 public class MainController {
 
     private final BookService bookService;
+    private final LogInInfo logInInfo;
 
     @GetMapping("/")
-    public String homePage(Principal principal, Model model) {
-        boolean isLoggedIn = principal != null;
-        model.addAttribute("isLoggedIn", isLoggedIn);
+    public String homePage(Model model) {
+        model.addAttribute("isLoggedIn", logInInfo.isLoggedIn());
         model.addAttribute("bookList", bookService.getRandomBooks());
         return "index";
     }
 
     @PostMapping
-    public String home_searchingBooks(@RequestParam(name = "title") String phrase, Model model, Principal principal) {
-        boolean isLoggedIn = principal != null;
-        model.addAttribute("isLoggedIn", isLoggedIn);
+    public String home_searchingBooks(@RequestParam(name = "title") String phrase, Model model) {
+        model.addAttribute("isLoggedIn", logInInfo.isLoggedIn());
         model.addAttribute("bookList", bookService.findByTitle(phrase));
         return "index";
     }
 
 
     @GetMapping("/book/{id:\\d+}")
-    public String viewBookPage(@PathVariable(name = "id") Long id, Model model, Principal principal)
+    public String viewBookPage(@PathVariable(name = "id") Long id, Model model)
             throws NoSuchElementException {
-        boolean isLoggedIn = principal != null;
-        model.addAttribute("isLoggedIn", isLoggedIn);
+        model.addAttribute("isLoggedIn", logInInfo.isLoggedIn());
         Book book = bookService.findById(id)
                 .orElseThrow(()-> new NoSuchElementException("Книга c идентификатором %d не найдена".formatted(id)));
         model.addAttribute("book", book);

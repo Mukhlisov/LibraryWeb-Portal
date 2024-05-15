@@ -24,15 +24,14 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_gen")
     private Long id;
-    
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "book_id")
-    private Book book;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
+    private Long book_id;
+
+    private Long user_id;
 
     @Temporal(TemporalType.DATE)
     private LocalDate rent_start_date;
+
+    @Temporal(TemporalType.DATE)
+    private LocalDate rent_end_date;
 }

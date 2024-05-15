@@ -1,10 +1,15 @@
 package com.github.mukhlisov;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +45,7 @@ public class BookEditController {
         return id + filename.substring(filename.lastIndexOf('.'));
     }
 
-    @GetMapping
+    @GetMapping({"/", ""})
     public String viewAllBooks(){
         return "redirect:/lib-books/page/1";
     }
@@ -74,9 +79,16 @@ public class BookEditController {
     }
 
     @PostMapping("/add")
-    public String addNewBook(@ModelAttribute BookDto bookDto,
+    public String addNewBook(@Valid @ModelAttribute BookDto bookDto, BindingResult result,
                             @RequestParam(name = "file") MultipartFile file,
-                            RedirectAttributes redirect) {
+                            RedirectAttributes redirect, Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("book", bookDto);
+            model.addAttribute("errors", result.getAllErrors().stream()
+                    .map(ObjectError::getDefaultMessage).toList());
+            return "add&update/add_book";
+        }
 
         Book book = bookService.saveBook(bookDto);
         String fileName = file.getOriginalFilename();
@@ -106,9 +118,16 @@ public class BookEditController {
     }
 
     @PostMapping("/update")
-    public String updateBook(@ModelAttribute BookDto bookDto,
+    public String updateBook(@Valid @ModelAttribute BookDto bookDto, BindingResult result,
                             @RequestParam(name = "file") MultipartFile file,
-                            RedirectAttributes redirect){
+                            RedirectAttributes redirect, Model model){
+
+        if (result.hasErrors()){
+            model.addAttribute("book", bookDto);
+            model.addAttribute("errors", result.getAllErrors().stream()
+                    .map(ObjectError::getDefaultMessage).toList());
+            return "add&update/update_book";
+        }
 
         String fileName = file.getOriginalFilename();
 

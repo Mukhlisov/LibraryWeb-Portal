@@ -4,6 +4,7 @@ package com.github.mukhlisov;
 import com.github.mukhlisov.auth.JwtResponse;
 import com.github.mukhlisov.exceptions.UserAlreadyExistsException;
 import com.github.mukhlisov.securityModule.AuthService;
+import com.github.mukhlisov.securityModule.LogInInfo;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.ui.Model;
@@ -32,10 +33,11 @@ public class AuthController {
 
     private final UserService userService;
     private final AuthService authService;
+    private final LogInInfo logInInfo;
 
     @GetMapping("/sign-up")
-    public String showRegistrationForm(Principal principal, Model model){
-        if (principal != null){
+    public String showRegistrationForm(Model model){
+        if (logInInfo.isLoggedIn()){
             return "redirect:/";
         }
         model.addAttribute("isLoggedIn", false);
@@ -65,8 +67,8 @@ public class AuthController {
     }
 
     @GetMapping("/sign-in")
-    public String showLoginForm(Principal principal, Model model){
-        if (principal != null){
+    public String showLoginForm(Model model){
+        if (logInInfo.isLoggedIn()){
             return "redirect:/";
         }
         model.addAttribute("isLoggedIn", false);
@@ -74,7 +76,7 @@ public class AuthController {
     }
     
     @PostMapping
-    public String signIn(@ModelAttribute JwtRequest jwtRequest, HttpSession session, RedirectAttributes redirect, Model model){
+    public String signIn(@ModelAttribute JwtRequest jwtRequest, HttpSession session){
         JwtResponse jwtResponse = authService.login(jwtRequest);
         session.setAttribute("accessToken", jwtResponse.getAccessToken());
         return "redirect:/";

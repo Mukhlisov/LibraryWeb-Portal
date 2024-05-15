@@ -1,6 +1,7 @@
 package com.github.mukhlisov;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -34,6 +35,9 @@ public class Book {
 
     @ManyToMany(mappedBy = "books", fetch = FetchType.EAGER)
     private Set<Author> authors;
+
+    @ManyToMany
+    private List<User> users;
 
     public Book(){}
 

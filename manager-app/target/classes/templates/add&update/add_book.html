@@ -9,46 +9,54 @@
 
     <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
     
-    <script th:src="@{/scripts/add_UpdateBookValidation.js}"></script>
+    <script th:src="@{/scripts/bookValidation.js}"></script>
 
     <title>Add</title>
 </head>
 <body>
     <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
 
-        <form id="bookForm" method="post" enctype="multipart/form-data" th:action = "@{/lib-books/add}">
-            <div class="mb-3" style="width: 50%;">
-                <label for="title" class="form-label"><b>Название книги</b></label>
-                <input type="text" id="title" name="title" class="form-control border-dark" required>
-              </div>
-            <div class="mb-3" style="width: 50%;">
-                <label for="authors" class="form-label"><b>Автор</b></label>
-                <input type="text" id="authors" name="authors" class="form-control border-dark" aria-describedby="authorsHelp" placeholder="Фамилия Имя Отчество">
-                <div class="form-text">Введите полное имя автора, если авторов несколько, то разделите их через ';'</div>
-            </div>
-            <div class="mb-3">
-                <label for="year" class="form-label"><b>Год</b></label>
-                <input type="number" id="year" name="year" style="width: 10%" class="form-control border-dark" value = 2000 min="1600">
-                <small style="color: red; display: none;" id="yearValueError">Валидные значения года от 1600 до текущего</small>
-            </div>
-            <div class="mb-3" style="width: 10%">
-                <label for="quantity" class="form-label"><b>Количество</b></label>
-                <input type="number" id="quantity" name="quantity" class="form-control border-dark" value="0" min="0">
-                <small style="color: red; display: none;" id="quantityValueError">Минимальное колличество 0</small>
-            </div>
-            <div class="mb-3" style="width: 50%;">
-                <label class="form-label"><b>Обложка</b></label>
-                <input type="file" accept=".jpg,.jpeg,.png" name="file" class="form-control border-dark">
-                <p class="fs-6">Загрузите файл весом до 5 МБ</p>
-              </div>
-            <div class="col-12">
-                <button class="btn btn-outline-primary" type="submit">Добавить</button>
-                <a th:href="@{/lib-books}" class="btn btn-outline-primary">Назад</a>
-            </div>
-        </form>
+        <div class="alert alert-danger" role="alert" th:if="${errors}">
+            <ul th:each="error : ${errors}">
+                <li th:text="${error}"></li>
+            </ul>
+        </div>
+
+        <div>
+            <form id="bookForm" method="post" enctype="multipart/form-data" th:action = "@{/lib-books/add}">
+                <div class="mb-3" style="width: 50%;">
+                    <label for="title" class="form-label"><b>Название книги</b></label>
+                    <input type="text" id="title" th:value="${book?.id}" name="title" class="form-control border-dark" required>
+                  </div>
+                <div class="mb-3" style="width: 50%;">
+                    <label for="authors" class="form-label"><b>Автор</b></label>
+                    <input type="text" id="authors" th:value="${book?.authors}" name="authors" class="form-control border-dark" aria-describedby="authorsHelp" placeholder="Фамилия Имя Отчество">
+                    <div class="form-text">Введите полное имя автора, если авторов несколько, то разделите их через ';'</div>
+                </div>
+                <div class="mb-3">
+                    <label for="year" class="form-label"><b>Год</b></label>
+                    <input type="number" id="year" th:value="${book?.year}" name="year" style="width: 10%" class="form-control border-dark" value = 2000 min="1600">
+                    <small style="color: red; display: none;" id="yearValueError">Валидные значения года от 1600 до текущего</small>
+                </div>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label"><b>Количество</b></label>
+                    <input type="number" id="quantity" th:value="${book?.quantity}" name="quantity" style="width: 10%" class="form-control border-dark" value="0" min="0">
+                    <small style="color: red; display: none;" id="quantityValueError">Минимальное колличество 0</small>
+                </div>
+                <div class="mb-3" style="width: 50%;">
+                    <label class="form-label"><b>Обложка</b></label>
+                    <input type="file" accept=".jpg,.jpeg,.png" name="file" class="form-control border-dark">
+                    <p class="fs-6">Загрузите файл весом до 5 МБ</p>
+                  </div>
+                <div class="col-12">
+                    <button class="btn btn-outline-primary" type="submit">Добавить</button>
+                    <a th:href="@{/lib-books}" class="btn btn-outline-primary">Назад</a>
+                </div>
+            </form>
+        </div>
 
     </div>
+
     <div th:replace="~{fragments/toast :: toast}"></div>
-    
 </body>
 </html>
