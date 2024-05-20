@@ -36,4 +36,8 @@ public interface BookRepo extends JpaRepository<Book, Long> {
 
     @Query(value = "SELECT full_name FROM authors, authors_books WHERE authors_books.books_id = :book_id AND authors_books.authors_id = id", nativeQuery = true)
     Set<String> findAllAuthorsByBookId(@Param("book_id") Long book_id);
+
+    @Modifying
+    @Query(value = "UPDATE books SET quantity = quantity + 1 WHERE books.id = :book_id", nativeQuery = true)
+    int incrementQuantityById(@Param("book_id") Long book_id);
 }

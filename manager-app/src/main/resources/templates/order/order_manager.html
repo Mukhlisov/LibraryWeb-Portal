@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+    <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
+
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+    <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+
+    <title>Manage menu</title>
+</head>
+<body>
+    <div th:replace="~{fragments/offcanvas :: contentList}"></div>
+
+    <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
+
+        <div class="navbar bg-transient">
+            <div class="container-fluid d-flex justify-content-between">
+                <a class="nav-item d-inline fs-1 link-dark" type="button" title="Выбрать список" data-bs-toggle="offcanvas" data-bs-target="#ManageMenu">Заказы</a>
+                <form class="nav-item" method="post" th:action = "@{/lib-orders/search}">
+                    <input class="form-control me-2" name="phoneNumber" type="search" placeholder="Номер телефона" aria-label="Поиск">
+                </form>
+            </div>
+        </div>
+
+
+        <table class = "table table-bordered border-dark table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col"><b>ID заказа</b></th>
+                    <th scope="col"><b>Заказчик</b></th>
+                    <th scope="col"><b>Номер телефона</b></th>
+                    <th scope="col"><b>Название книги</b></th>
+                    <th scope="col"><b>Начало аренды</b></th>
+                    <th scope="col"><b>Конец аренды</b></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <tr th:each="order : ${orders}">
+                    <th th:text="${order.id}"></th>
+                    <th th:text="${order.user.firstName}"></th>
+                    <th th:text="${order.user.phoneNumber}"></th>
+                    <th th:text="${order.book.title}"></th>
+                    <th th:text="${order.convertToNormalDate(order.rent_start_date)}"></th>
+                    <th th:text="${order.convertToNormalDate(order.rent_end_date)}"></th>
+                    <th>
+                        <div th:if="${order.rent_end_date == null}">
+                            <form method="get" th:action="@{/lib-orders/accept}">
+                                <input type="hidden" name="order_id" th:value="${order.id}">
+                                <button type="submit" class="btn btn-outline-primary">Выдать</button>
+                            </form>
+                        </div>
+                        <div th:unless="${order.rent_end_date == null}">
+                            <form method="post" th:action="@{/lib-orders/close}">
+                                <input type="hidden" name="order_id" th:value="${order.id}">
+                                <input type="hidden" name="book_id" th:value="${order.book.id}">
+                                <button type="submit" class="btn btn-outline-danger">Закрыть</button>
+                            </form>
+                        </div>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${pageable}">
+            <div th:replace="~{fragments/pagination :: pagination_m}"></div>
+        </div>
+    </div>
+    <div th:replace="~{fragments/toast :: toast}"></div>
+
+</body>
+</html>

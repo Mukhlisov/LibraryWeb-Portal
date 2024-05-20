@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+    <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
+
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+    <script th:src="@{/scripts/order_acceptValidation.js}"></script>
+    <title>Accept</title>
+</head>
+<body>
+    <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
+
+        <div class="alert alert-danger" role="alert" th:if="${errors}">
+            <ul th:each="error : ${errors}">
+                <li th:text="${error}"></li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <form id="orderAcceptForm" method="post" th:action="@{/lib-orders/accept}">
+                <div class="container d-inline-grid bg-light gap-3 mt-3">
+                    <div class="mb-1"><b>Название: </b>[[${order.title}]]</div>
+                    <label for="rent_end_date" class="form-label"><b>Дата возврата книги:</b></label>
+                    <div>
+                        <input type="hidden" name="order_id" th:value="${order.order_id}">
+                        <input style="max-width: 20%;" type="date" id="rent_end_date" name="rent_end_date" class="form-control border-dark">
+                        <small>Выберите дату до <small id="lastDay"></small></small>
+                        <small style="color: red; display: none" id="dateError">Введите корректную дату</small>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-outline-primary mt-3">Принять заказ</button>
+            </form>
+        </div>
+        <a th:href="@{/lib-orders/page/1}" class="btn btn-outline-primary">Назад</a>
+    </div>
+
+
+    <script>
+        const smallElement = document.querySelector("small");
+        let currentDateElement = document.createElement("small");
+        currentDateElement.id = "lastDay";
+        function updateCurrentDate() {
+            let currentDate = new Date();
+            currentDate.setDate(currentDate.getDate() + 30);
+            currentDateElement.textContent = currentDate.toLocaleDateString();
+        }
+        smallElement.insertAdjacentElement("afterend", currentDateElement);
+        updateCurrentDate();
+    </script>
+
+</body>
+</html>

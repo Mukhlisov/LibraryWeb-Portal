@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -25,13 +26,33 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_gen")
     private Long id;
 
-    private Long book_id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "book_id")
+    private Book book;
 
-    private Long user_id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Temporal(TemporalType.DATE)
     private LocalDate rent_start_date;
 
     @Temporal(TemporalType.DATE)
     private LocalDate rent_end_date;
+
+    public Order(){}
+
+    public Order(Book book, User user, LocalDate rent_start_date) {
+        this.book = book;
+        this.user = user;
+        this.rent_start_date = rent_start_date;
+    }
+
+    public String convertToNormalDate(LocalDate date){
+        if (date == null){
+            return "";
+        }
+        String[] ymd = date.toString().split("-");
+        return "%s.%s.%s".formatted(ymd[2], ymd[1], ymd[0]);
+    }
 }
