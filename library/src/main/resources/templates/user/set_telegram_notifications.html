@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+    <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
+
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+
+    <title>Set Notifications</title>
+</head>
+
+<body>
+    <div class = "sticky-top" th:replace = "~{fragments/header :: navigbar (isLoggedIn = ${isLoggedIn})}"></div>
+
+    <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
+        <a th:href="@{/profile}">&laquo; Просмотр профиля </a>
+
+        <form th:action="@{setTelegramNotifications}" method="post">
+            <div class="d-flex flex-column align-items-center">
+                <label for="chatId" class="form-label"><b>ID из сообщения telegram бота</b></label>
+                <input name="chatId" id="chatId" type="text" class="form-control border-dark mb-3 w-75 text-center">
+                <button class="btn btn-outline-primary" type="submit">Сохранить</button>
+                <div class="mt-4">
+                    <small>Чтобы добавить ID напишите нашему боту в телеграм: <a href="https://t.me/LibHubNotif_bot" target="_blank">t.me/LibHubNotif_bot</a></small>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

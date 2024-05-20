@@ -8,7 +8,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@Table(name = "Users")
+@Table(name = "Users", indexes = {
+        @Index(name = "idx_phone_number", columnList = "phone_number")
+})
 @Entity
 @SequenceGenerator(name = "user_gen", sequenceName = "user_seq", allocationSize = 1)
 public class User {
@@ -28,7 +30,10 @@ public class User {
 
     private String email;
 
-    @ManyToMany
+    @Column(name = "chat_id")
+    private Long chatId;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Order> orders;
     
     @JsonIgnore

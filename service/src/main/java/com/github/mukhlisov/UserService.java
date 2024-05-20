@@ -12,4 +12,5 @@ public interface UserService {
     UserInfoDto findById(Long id);
     User saveUser(RegRequest userRegDto);
     void updateUser(UserUpdateDto userUpdateDto);
+    void setChatId(Long user_id, Long chat_id);
 }

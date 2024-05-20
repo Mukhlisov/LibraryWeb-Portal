@@ -2,7 +2,6 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" th:href="@{/styles/style.css}">
@@ -19,8 +18,14 @@
 
     <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
         <a th:href="@{/book/{id}(id=${book.book_id})}">&laquo; Вернуться назад</a>
+        <div class="alert alert-danger" role="alert" th:if="${errors}">
+            <ul th:each="error : ${errors}">
+                <li th:text="${error}"></li>
+            </ul>
+        </div>
         <form id="orderCreateForm" method="post" th:action="@{/order/create}">
             <div class="container d-inline-grid bg-light gap-3 mt-3">
+                <input type="hidden" name="title" th:value="${book.title}">
                 <div class="mb-1"><b>Название: </b>[[${book.title}]]</div>
                 <input type="hidden" name="book_id" th:value="${book.book_id}">
                 <label for="rent_start_date" class="form-label"><b>Дата выдачи заказа:</b></label>
@@ -30,7 +35,7 @@
                     <small style="color: red; display: none" id="dateError">Введите корректную дату</small>
                 </div>
             </div>
-            <button type="submit" class="btn btn-outline-success mt-3">Оформить заказ</button>
+            <button type="submit" class="btn btn-outline-primary mt-3">Оформить заказ</button>
         </form>
 
     </div>

@@ -1,4 +1,4 @@
-const source = 'http://localhost:8081/covers/';
+const source = /*'http://26.106.154.178:8081/covers/';*/'http://localhost:8081/covers/';
 
 window.onload = function() {
     let images = document.getElementsByClassName('dynamic-image');

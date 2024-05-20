@@ -1,0 +1,14 @@
+<div th:fragment="profileHeader" class="d-inline-flex mb-5 gap-5">
+     <div class="align-content-end">
+        <h2 th:if="${user}">Просмотр профиля</h2>
+        <a th:unless="${user}" th:href="@{/profile}" class="text-primary fs-4">Просмотр профиля</a>
+    </div>
+    <div class="align-content-end">
+        <h2 th:if="${orders}">Заказы</h2>
+        <a th:unless="${orders}" class="text-primary fs-4" th:href="@{/profile/orders}">Заказы</a>
+    </div>
+    <div class="align-content-end">
+        <h2 th:if="${myBooks}">Мои книги</h2>
+        <a th:unless="${myBooks}" class="text-primary fs-4" th:href="@{/profile/mybooks}">Мои книги</a>
+    </div>
+</div>

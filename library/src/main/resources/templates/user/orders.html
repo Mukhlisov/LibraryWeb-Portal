@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+    <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
+
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+    <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+
+    <title>Profile</title>
+</head>
+
+<body>
+<div class = "sticky-top" th:replace = "~{fragments/header :: navigbar (isLoggedIn = ${isLoggedIn})}"></div>
+
+<div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
+    <div th:replace = "~{fragments/profile_header :: profileHeader}"></div>
+
+    <div>
+        <table class="table">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID заказа</th>
+                    <th>Книга</th>
+                    <th>Год издания</th>
+                    <th>Дата получения</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.id}"></td>
+                    <td><a class="form-label" th:href="@{/book/{book_id}(book_id = ${order.book.id})}" th:text="${order.book.title}"></a></td>
+                    <td th:text="${order.book.year}"></td>
+                    <td th:text="${order.convertToNormalDate(order.rent_start_date)}"></td>
+                    <td>
+                        <button type="button" class="btn btn-outline-danger reject-order-btn" data-bs-toggle="modal" data-bs-target="#orderReject" th:data-order-id="${order.id}" th:data-book-id="${order.book.id}">
+                            Отказаться
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div th:replace="~{fragments/toast :: toast}"></div>
+
+<!--Modal window for order rejection-->
+<div class="modal fade" id="orderReject" tabindex="-1" aria-labelledby="orderRejectQuestion" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="orderRejectQuestion">Вы действительно хотите отказаться от заказа?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" th:action="@{/order/reject}">
+                    <input type="hidden" id="bookIdInput" name="book_id">
+                    <input type="hidden" id="orderIdInput" name="order_id">
+                    <div class="container d-inline-flex justify-content-start">
+                        <div class="me-2"><button type="submit" class="btn btn-outline-danger">Отказаться</button></div>
+                        <div><button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Отмена</button></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const rejectButtons = document.querySelectorAll('.reject-order-btn');
+        const orderIdInput = document.getElementById('orderIdInput');
+        const bookIdInput = document.getElementById('bookIdInput');
+
+        rejectButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                orderIdInput.value = button.getAttribute('data-order-id');
+                bookIdInput.value = button.getAttribute('data-book-id')
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

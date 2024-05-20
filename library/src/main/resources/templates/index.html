@@ -23,7 +23,7 @@
       <a class="card mb-3 text-bg-light border border-black" th:href="@{/book/{bookId}(bookId=${book.id})}" style="max-width: 540px; text-decoration: none;">
         <div class="row g-0">
           <div class="col-md-4">
-            <img th:data-cover="${book.cover}" class="dynamic-image img-fluid rounded-start" alt="No image yet...">
+            <img th:data-cover="${book.cover}" class="dynamic-image img-fluid rounded-start" alt="No image yet..." loading="lazy">
           </div>
           <div class="col-md-8">
             <div class="card-body">

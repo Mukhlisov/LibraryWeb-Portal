@@ -6,7 +6,6 @@ import java.util.Optional;
 import com.github.mukhlisov.dto.AuthorDto;
 import com.github.mukhlisov.Author;
 import com.github.mukhlisov.AuthorService;
-import com.github.mukhlisov.Book;
 import com.github.mukhlisov.repository.AuthorRepo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,43 +19,43 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
-    private final AuthorRepo repository;
+    private final AuthorRepo authorRepo;
 
     @Override
     public Optional<Author> findById(Long id) {
-        return repository.findById(id);
+        return authorRepo.findById(id);
     }
 
     @Override
     public void updateAuthor(AuthorDto authorDto) {
-        Author author = repository.findById(authorDto.getId()).get();
+        Author author = authorRepo.findById(authorDto.getId()).get();
         author.setFullName(authorDto.getFullName());
-        repository.save(author);
+        authorRepo.save(author);
     }
 
     
     @Transactional
     @Override
     public void deleteById(Long id) {
-        repository.deleteRelationShips(id);
-        repository.deleteById(id);
+        authorRepo.deleteRelationShips(id);
+        authorRepo.deleteById(id);
     }
 
     @Override
     public Author saveAuthor(AuthorDto authorDto) {
         Author author = new Author(authorDto.getFullName());
-        return repository.save(author);
+        return authorRepo.save(author);
     }
 
     @Override
     public List<Author> findAllAuthors(String phrase) {
-        return repository.findByPhrase(phrase);
+        return authorRepo.findByPhrase(phrase);
     }
 
     @Override
     public Page<Author> findPaginated(int page, int page_size) {
         Pageable pageable = PageRequest.of(page - 1, page_size);
-        return repository.findAll(pageable);
+        return authorRepo.findAll(pageable);
     }
 
     

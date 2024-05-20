@@ -25,7 +25,6 @@ public class RegRequest {
     @Pattern(regexp = "^\\d+$", message = "Номер телефона должен содержать только цифры")
     private String phoneNumber;
 
-    @NotEmpty(message = "Поле: Почта не может быть пустым")
     @Email(message = "Неверный формат почты")
     private String email;
 

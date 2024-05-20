@@ -22,6 +22,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepo repository;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepo userRepo;
 
 
     @Override
@@ -57,6 +58,12 @@ public class UserServiceImpl implements UserService {
         repository.save(user);
     }
 
+    @Transactional
+    @Override
+    public void setChatId(Long user_id, Long chat_id) {
+        userRepo.setChatId(user_id, chat_id);
+    }
+
     @Override
     public Optional<User> findByPhoneNumber(String phoneNumber) {
         return repository.findByPhoneNumber(phoneNumber);
@@ -64,12 +71,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserInfoDto findById(Long id) {
-        User user = repository.findById(id)
-                .orElseThrow(()-> new RuntimeException("User not found"));
+        User user = repository.findById(id).get();
         return new UserInfoDto(
                 user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
+                user.getChatId(),
                 user.getPhoneNumber(),
                 user.getEmail()
         );

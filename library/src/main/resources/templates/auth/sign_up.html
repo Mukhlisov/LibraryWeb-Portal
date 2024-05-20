@@ -10,7 +10,7 @@
     <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
     <script th:src="@{/scripts/regFormValidation.js}"></script>
 
-    <title>Sign in</title>
+    <title>Sign up</title>
 </head>
 
 <body>
@@ -36,7 +36,7 @@
                 <small id="phoneLengthError" style="color: red; display: none;" class="mb-3">Неверный формат номра телефона</small>
                 
                 <label for="email" class="form-label"><b>Электронная почта</b></label>
-                <input th:value="${regRequest?.email}" type="email" name="email" id="email" class="form-control border-dark mb-3" autocomplete="email" required>
+                <input th:value="${regRequest?.email}" type="email" name="email" id="email" class="form-control border-dark mb-3" autocomplete="email">
                 
                 <label for="passwordReg" class="form-label"><b>Пароль</b></label>
                 <input type="password" id="passwordReg" name="password" class="form-control border-dark mb-3" minlength="5" autocomplete="new-password" required>

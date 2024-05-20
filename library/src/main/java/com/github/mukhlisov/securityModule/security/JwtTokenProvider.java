@@ -35,7 +35,7 @@ public class JwtTokenProvider {
     public String createAccessToken(Long userId, String username) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("id", userId);
-        Instant validity = Instant.now().plus(jwtProperties.getAccess(), ChronoUnit.HOURS);
+        Instant validity = Instant.now().plus(jwtProperties.getAccess(), ChronoUnit.DAYS);
 
         return Jwts.builder()
                 .setClaims(claims)
