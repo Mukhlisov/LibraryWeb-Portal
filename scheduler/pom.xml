@@ -10,7 +10,8 @@
     </parent>
 
     <artifactId>scheduler</artifactId>
-    <description>scheduler for sending e-mails</description>
+    <description>scheduler for sending e-mail and telegram notifications</description>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

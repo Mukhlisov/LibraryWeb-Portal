@@ -8,6 +8,7 @@
         <artifactId>library-web</artifactId>
         <version>1.0.0</version>
     </parent>
+    <packaging>jar</packaging>
 
     <artifactId>staticResources</artifactId>
 
