@@ -21,18 +21,15 @@ public interface BookRepo extends JpaRepository<Book, Long> {
 
     @Modifying
     @Query(value = "INSERT INTO authors_books (authors_id, books_id) SELECT :author_id, :book_id WHERE NOT EXISTS (SELECT 1 FROM authors_books WHERE authors_id = :author_id AND books_id = :book_id);", nativeQuery = true)
-    void createRelationShip(@Param("book_id") Long book_id, @Param("author_id") Long author_id);
+    void createRelation(@Param("book_id") Long book_id, @Param("author_id") Long author_id);
 
     @Modifying
     @Query(value = "DELETE FROM authors_books WHERE books_id = :book_id", nativeQuery = true)
-    int deleteRelationShips(@Param("book_id") Long id);
+    int deleteRelations(@Param("book_id") Long id);
     
     @Modifying
     @Query(value = "DELETE FROM authors_books WHERE books_id = :book_id AND authors_id = :author_id", nativeQuery = true)
-    int deleteRelationShip(@Param("book_id") Long book_id, @Param("author_id") Long author_id);
-
-    @Query(value = "SELECT id FROM authors WHERE authors.full_name = :fullName", nativeQuery = true)
-    Long findAuthorByFullName(@Param("fullName") String fullName);
+    int deleteRelation(@Param("book_id") Long book_id, @Param("author_id") Long author_id);
 
     @Query(value = "SELECT full_name FROM authors, authors_books WHERE authors_books.books_id = :book_id AND authors_books.authors_id = id", nativeQuery = true)
     Set<String> findAllAuthorsByBookId(@Param("book_id") Long book_id);

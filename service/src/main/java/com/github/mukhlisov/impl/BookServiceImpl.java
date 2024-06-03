@@ -49,10 +49,10 @@ public class BookServiceImpl implements BookService {
             if (!fullName.isEmpty()){
                 Author author = authorRepo.findByFullName(fullName);
                 if (author != null){
-                    bookRepo.createRelationShip(book.getId(), author.getId());
+                    bookRepo.createRelation(book.getId(), author.getId());
                 } else {
                     author = authorRepo.save(new Author(fullName));
-                    bookRepo.createRelationShip(book.getId(), author.getId());
+                    bookRepo.createRelation(book.getId(), author.getId());
                 }
             }
         }
@@ -81,10 +81,10 @@ public class BookServiceImpl implements BookService {
                 } else{
                     Author author = authorRepo.findByFullName(fullName);
                     if (author != null){
-                        bookRepo.createRelationShip(book.getId(), author.getId());
+                        bookRepo.createRelation(book.getId(), author.getId());
                     } else{
                         author = authorRepo.save(new Author(fullName));
-                        bookRepo.createRelationShip(book.getId(), author.getId());
+                        bookRepo.createRelation(book.getId(), author.getId());
                     }
                 }
             }
@@ -92,8 +92,8 @@ public class BookServiceImpl implements BookService {
 
         for (String authors_to_delete : alreadySavedAuthors) {
             Author author = authorRepo.findByFullName(authors_to_delete);
-            bookRepo.deleteRelationShip(book.getId(), author.getId());
-            if (authorRepo.countAuthorRelationShips(author.getId()) == 0){
+            bookRepo.deleteRelation(book.getId(), author.getId());
+            if (authorRepo.countAuthorRelations(author.getId()) == 0){
                 authorRepo.deleteById(author.getId());
             }
         }
@@ -109,13 +109,13 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void deleteBook(Long id) {
         Set<String> alreadySavedAuthors = bookRepo.findAllAuthorsByBookId(id);
-        bookRepo.deleteRelationShips(id);
+        bookRepo.deleteRelations(id);
         for (String name : alreadySavedAuthors){
             String fullName = name.trim();
 
             if (!fullName.isEmpty()){
                 Author author = authorRepo.findByFullName(fullName);
-                if (author != null && authorRepo.countAuthorRelationShips(author.getId()) == 0){
+                if (author != null && authorRepo.countAuthorRelations(author.getId()) == 0){
                     authorRepo.deleteById(author.getId());
                 }
             }

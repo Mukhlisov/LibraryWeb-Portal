@@ -32,12 +32,11 @@ public class AuthorServiceImpl implements AuthorService {
         author.setFullName(authorDto.getFullName());
         authorRepo.save(author);
     }
-
     
     @Transactional
     @Override
     public void deleteById(Long id) {
-        authorRepo.deleteRelationShips(id);
+        authorRepo.deleteRelations(id);
         authorRepo.deleteById(id);
     }
 
