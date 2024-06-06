@@ -7,16 +7,16 @@ import com.github.mukhlisov.dto.AuthorDto;
 import com.github.mukhlisov.Author;
 import com.github.mukhlisov.AuthorService;
 import com.github.mukhlisov.repository.AuthorRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepo authorRepo;
@@ -28,11 +28,13 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void updateAuthor(AuthorDto authorDto) {
-        Author author = authorRepo.findById(authorDto.getId()).get();
+        Author author = authorRepo.findById(authorDto.getId())
+                .orElseThrow(() ->
+                        new RuntimeException("Author with id %d not found".formatted(authorDto.getId())));
         author.setFullName(authorDto.getFullName());
         authorRepo.save(author);
     }
-    
+
     @Transactional
     @Override
     public void deleteById(Long id) {
@@ -56,6 +58,4 @@ public class AuthorServiceImpl implements AuthorService {
         Pageable pageable = PageRequest.of(page - 1, page_size);
         return authorRepo.findAll(pageable);
     }
-
-    
 }

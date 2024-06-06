@@ -47,7 +47,6 @@ public class SecurityConfig{
                 .logout(logout -> logout
                         .logoutSuccessUrl("/")
                 )
-
                 .anonymous(withDefaults())
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 

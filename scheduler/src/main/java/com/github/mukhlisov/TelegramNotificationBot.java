@@ -62,7 +62,7 @@ public class TelegramNotificationBot extends TelegramLongPollingBot {
             failedToSendMessageErrorOutput(messageText);
             log.error("Exception:%s".formatted(e.getMessage()));
         }
-    };
+    }
 
     @Override
     public String getBotUsername() {
