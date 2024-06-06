@@ -16,7 +16,7 @@
         <module>library</module>
         <module>model</module>
         <module>service</module>
-        <module>ImageProvider</module>
+        <module>imageService</module>
         <module>staticResources</module>
         <module>scheduler</module>
     </modules>

@@ -1,7 +1,7 @@
-package com.github.mukhlisov;
+package com.github.mukhlisov.controller;
 
+import com.github.mukhlisov.fileSystemImageStorage.StorageProperties;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -15,11 +15,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.CacheControl;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,15 +26,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RestController
 public class ImageProvideController {
 
-    @Value("${filesource-dir}")
-    private String source;
+    private final String source;
+    private final String noCover;
 
-    @Value("${void-file}")
-    private String noCover;
+    public ImageProvideController(StorageProperties properties, @Value("${void-file}") String noCover) {
+        source = properties.getDir();
+        this.noCover = noCover;
+    }
 
     @SneakyThrows
     @GetMapping("/covers/{filename:.+}")
-    public ResponseEntity<byte[]> serveImage(@PathVariable(required = false) String filename) throws FileNotFoundException {
+    public ResponseEntity<byte[]> serveImage(@PathVariable(required = false) String filename) {
         UrlResource resource = new UrlResource(Paths.get(source, filename).toUri());
         return createResponseEntity(resource);
     }
@@ -58,14 +57,12 @@ public class ImageProvideController {
                 outputStream.write(buffer, 0, bytesRead);
             }
         }
-
         byte[] bytes = outputStream.toByteArray();
-
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(bytes);
     }
 
     @ExceptionHandler(FileNotFoundException.class)
     public ResponseEntity<?> handleFileNotFound(FileNotFoundException exc) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("<h1>Файл не найден</h1><h3>"+exc.getMessage()+"</h3>");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Файл не найден: " +exc.getMessage());
     }
 }

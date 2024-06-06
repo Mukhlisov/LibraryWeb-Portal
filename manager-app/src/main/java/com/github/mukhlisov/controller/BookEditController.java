@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 
 import com.github.mukhlisov.Book;
 import com.github.mukhlisov.BookService;
+import com.github.mukhlisov.service.ImageManagementService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.github.mukhlisov.dto.BookDto;
-import com.github.mukhlisov.fileSystemImageStorage.StorageService;
 
 import lombok.AllArgsConstructor;
 
@@ -35,7 +35,7 @@ public class BookEditController {
     private static final int PAGES_IN_ROW = 4;
 
     private final BookService bookService;
-    private final StorageService storageService;
+    private final ImageManagementService imageManagementService;
 
     private static boolean isInValidFile(String filename){
         return !filename.substring(filename.lastIndexOf('.') + 1).matches("jpg|jpeg|png");
@@ -99,7 +99,7 @@ public class BookEditController {
                 return "redirect:/lib-books/add";
             }
             String uniqueFilename = getUniqueFileName(book.getId(), fileName);
-            storageService.upload(file, uniqueFilename);
+            imageManagementService.sendImage(file, uniqueFilename);
             book.setCover(uniqueFilename);
         } else{
             book.setCover("");
@@ -126,9 +126,8 @@ public class BookEditController {
             model.addAttribute("book", bookDto);
             model.addAttribute("errors", result.getAllErrors().stream()
                     .map(ObjectError::getDefaultMessage).toList());
-            return "add&update/update_book";
+            return "book/update_book";
         }
-
         String fileName = file.getOriginalFilename();
 
         if (!fileName.isEmpty()){
@@ -137,7 +136,7 @@ public class BookEditController {
                 return "redirect:/lib-books/update/%d".formatted(bookDto.getId());
             }
             String uniqueFilename = getUniqueFileName(bookDto.getId(), fileName);
-            storageService.upload(file, uniqueFilename);
+            imageManagementService.updateImage(file, uniqueFilename, bookDto.getCover());
             bookDto.setCover(uniqueFilename);
         }
         bookService.updateBook(bookDto);
@@ -151,7 +150,7 @@ public class BookEditController {
                                 RedirectAttributes redirect){
 
         if (!cover.isEmpty()){
-            storageService.deleteByName(cover);
+            imageManagementService.deleteFile(cover);
         }
         bookService.deleteBook(id);
         redirect.addFlashAttribute("message", "Книга была успешно удалена!");

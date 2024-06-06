@@ -38,7 +38,6 @@ public class FileSystemStorageService implements StorageService{
 			Path destinationFile = this.rootLocation
 					.resolve(Paths.get(uniqueFilename))
 					.normalize().toAbsolutePath();
-            System.out.println(destinationFile);
 			try (InputStream inputStream = file.getInputStream()) {
 				Files.copy(inputStream, destinationFile,
 					StandardCopyOption.REPLACE_EXISTING);
@@ -60,8 +59,7 @@ public class FileSystemStorageService implements StorageService{
     }
 
 	@Override
-	@SneakyThrows
-	public void deleteByName(String fileName) {
+	public void deleteByName(String fileName) throws IOException {
 		Path fileToDelete = rootLocation.resolve(fileName).normalize().toAbsolutePath();
 		Files.deleteIfExists(fileToDelete);
 	}
