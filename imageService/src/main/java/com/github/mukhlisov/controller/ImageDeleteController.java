@@ -3,14 +3,14 @@ package com.github.mukhlisov.controller;
 import com.github.mukhlisov.fileSystemImageStorage.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-@Controller
+@RestController
 @RequestMapping("/delete")
 @RequiredArgsConstructor
 public class ImageDeleteController {

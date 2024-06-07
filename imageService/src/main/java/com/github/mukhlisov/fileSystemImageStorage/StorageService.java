@@ -8,4 +8,5 @@ public interface StorageService {
     void init();
     void upload(MultipartFile file, String uniqueFilename);
     void deleteByName(String fileName) throws IOException;
+    byte[] getByName(String fileName) throws IOException;
 }

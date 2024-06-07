@@ -1,4 +1,4 @@
-const source = 'http://localhost:8081/covers/';
+const source = 'http://localhost:8081/get/';
 
 window.onload = function() {
     let images = document.getElementsByClassName('dynamic-image');
