@@ -1,4 +1,4 @@
-package com.github.mukhlisov.dto;
+package com.github.mukhlisov.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ReminderDto {
+public class Reminder {
     private String firstName;
     private String lastName;
     private Long chatId;
