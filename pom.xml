@@ -19,6 +19,8 @@
         <module>imageService</module>
         <module>staticResources</module>
         <module>scheduler</module>
+        <module>telegram-notifications</module>
+        <module>email-notifications</module>
     </modules>
 
     <properties>
@@ -28,6 +30,7 @@
         <spring-boot.version>3.2.5</spring-boot.version>
         <lombok.version>1.18.32</lombok.version>
         <postgresql.version>42.7.3</postgresql.version>
+        <kafka.version>3.2.0</kafka.version>
     </properties>
 
     <dependencyManagement>

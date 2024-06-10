@@ -13,7 +13,6 @@ import java.util.List;
 @Repository
 public interface OrderRepo extends JpaRepository<Order, Long>{
     List<Order> findByUserId(Long id);
-    Order findByBookId(Long id);
 
     List<Order> findOrderByUserPhoneNumber(String phoneNumber);
 
@@ -24,6 +23,6 @@ public interface OrderRepo extends JpaRepository<Order, Long>{
     @Query(value = "UPDATE orders SET rent_end_date = :date WHERE orders.id = :id", nativeQuery = true)
     int updateOrderRentEndDate(@Param("date") LocalDate date, @Param("id") Long id);
 
-    @Query(value = "SELECT * FROM orders WHERE orders.rent_start_date < :date AND orders.rent_end_date IS NOT NULL", nativeQuery = true)
+    @Query(value = "SELECT * FROM orders WHERE orders.rent_end_date IS NULL AND orders.rent_start_date < :date", nativeQuery = true)
     List<Order> findExpiredOrders(@Param("date") LocalDate date);
 }
