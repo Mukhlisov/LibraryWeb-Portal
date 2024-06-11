@@ -17,7 +17,11 @@
 
     <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
         <a th:href="@{/profile}">&laquo; Просмотр профиля </a>
-
+        <div class="alert alert-danger" role="alert" th:if="${errors}">
+            <ul th:each="error : ${errors}">
+                <li th:text="${error}"></li>
+            </ul>
+        </div>
         <form th:action="@{setTelegramNotifications}" method="post">
             <div class="d-flex flex-column align-items-center">
                 <label for="chatId" class="form-label"><b>ID из сообщения telegram бота</b></label>

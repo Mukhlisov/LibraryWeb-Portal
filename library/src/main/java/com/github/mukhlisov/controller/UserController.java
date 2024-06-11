@@ -3,9 +3,11 @@ package com.github.mukhlisov.controller;
 import com.github.mukhlisov.Order;
 import com.github.mukhlisov.OrderService;
 import com.github.mukhlisov.UserService;
+import com.github.mukhlisov.dto.ChatIdDto;
 import com.github.mukhlisov.dto.UserInfoDto;
 import com.github.mukhlisov.dto.UserUpdateDto;
 import com.github.mukhlisov.exceptions.UserAlreadyExistsException;
+import com.github.mukhlisov.securityModule.LogInInfo;
 import com.github.mukhlisov.securityModule.SecurityService;
 import com.github.mukhlisov.securityModule.security.JwtEntity;
 import jakarta.validation.Valid;
@@ -76,7 +78,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/orders")
+    @GetMapping("/myorders")
     public String myOrdersPage(Model model, Principal principal) {
         JwtEntity jwtPrincipal = securityService.convertPrincipal(principal);
         List<Order> orders = orderService.findByUserId(jwtPrincipal.getId())
@@ -103,9 +105,18 @@ public class UserController {
     }
 
     @PostMapping("/setTelegramNotifications")
-    public String setTelegramNotifications(@RequestParam("chatId") Long chatId, RedirectAttributes redirect, Principal principal){
-        JwtEntity jwtEntity = securityService.convertPrincipal(principal);
-        userService.setChatId(jwtEntity.getId(), chatId);
+    public String setTelegramNotifications(@Valid @ModelAttribute ChatIdDto chatId, BindingResult result,
+                                           RedirectAttributes redirect, Model model, Principal principal){
+        if (result.hasErrors()) {
+            model.addAttribute("isLoggedIn", IS_LOGGED_IN);
+            model.addAttribute("errors", result.getAllErrors().stream()
+                    .map(ObjectError::getDefaultMessage)
+                    .toList());
+            return "user/set_telegram_notifications";
+        }
+
+        JwtEntity jwtPrincipal = securityService.convertPrincipal(principal);
+        userService.setChatId(jwtPrincipal.getId(), Long.parseLong(chatId.getChatId()));
         redirect.addFlashAttribute("message", "Телеграм уведомления подключены!");
         return "redirect:/profile";
     }
