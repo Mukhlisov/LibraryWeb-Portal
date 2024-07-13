@@ -5,48 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" th:href="@{/styles/style.css}">
-    <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png" />
+    <link rel="icon" th:href="@{/icons/icons8-book-50.png}" type="image/png"/>
 
     <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
-    
+    <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+
     <script th:src="@{/scripts/imageLoader.js}"></script>
 
     <title>LibHub</title>
 </head>
 
 <body>
-  <div class = "sticky-top" th:replace = "~{fragments/header :: navigbar (isLoggedIn = ${isLoggedIn})}"></div>
+<div class="sticky-top" th:replace="~{fragments/header :: navigbar (isLoggedIn = ${isLoggedIn})}"></div>
 
-  <div class = "container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
-    
-    <div th:each="book : ${bookList}">
-      <a class="card mb-3 text-bg-light border border-black" th:href="@{/book/{bookId}(bookId=${book.id})}" style="max-width: 540px; text-decoration: none;">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img th:data-cover="${book.cover}" class="dynamic-image img-fluid rounded-start" alt="No image yet..." loading="lazy">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h3 class="card-title" th:text="${book.title}"></h3>
-              <p class="card-text">Год издания: [[${book.year}]]</p>
-              <div th:if ="${book.authors.isEmpty()}">
-                <p>Автор не указан</p>
-              </div>
-              <div th:unless="${book.authors.isEmpty()}">
-                <p class="card-text">Автор: <span th:each="author : ${book.authors}"><span th:text="${author.getShortName()} + '; '"></span></span></p>
-              </div>
-              <div th:if="${book.quantity == 0}">
-                <p class="card-text"><small class="text-body-secondary">Нет в наличии</small></p>
-              </div>
-              <div th:unless="${book.quantity == 0}">
-                <p class="card-text"><small class="text-body-secondary">Книг в наличии: [[${book.quantity}]]</small></p>
-              </div>
-            </div>
-          </div>
+<div class="container-md bg-light px-5 py-5 mt-3 rounded rounded-1">
+
+    <div class="row row-cols-2">
+        <div th:each="book : ${bookList}" class="col">
+            <a class="card mb-4 border border-0" th:href="@{/book/{bookId}(bookId=${book.id})}" style="max-width: 40%; text-decoration: none;">
+
+                <img th:data-cover="${book.cover}" class="dynamic-image img-fluid object-fit-contain" alt="No image yet..." loading="lazy">
+
+                <div class="card-body bg-light border border-bottom-1">
+                    <div class="text-truncate h4" th:text="${book.title}"></div>
+                    <p class="card-text">Год издания: [[${book.year}]]</p>
+                    <div th:if="${book.authors.isEmpty()}">
+                        <p>Автор не указан</p>
+                    </div>
+                    <div th:unless="${book.authors.isEmpty()}">
+                        <p class="card-text"><span th:each="author : ${book.authors}"><span
+                                th:text="${author.getShortName()} + ' '"></span></span></p>
+                    </div>
+                    <div th:if="${book.quantity == 0}">
+                        <p class="card-text"><small class="text-body-secondary">Нет в наличии</small></p>
+                    </div>
+                    <div th:unless="${book.quantity == 0}">
+                        <p class="card-text"><small class="text-body-secondary">Книг в наличии:
+                            [[${book.quantity}]]</small></p>
+                    </div>
+                </div>
+            </a>
         </div>
-      </a>
     </div>
-  </div>
+</div>
 
 </body>
 </html>

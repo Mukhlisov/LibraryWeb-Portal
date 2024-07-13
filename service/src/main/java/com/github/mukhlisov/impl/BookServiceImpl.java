@@ -22,7 +22,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class BookServiceImpl implements BookService {
 
-    private static final int LIMIT = 4;
+    private static final int LIMIT = 8;
     private final BookRepo bookRepo;
     private final AuthorRepo authorRepo;
 
